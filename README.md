@@ -29,12 +29,6 @@ An exciting **Android racing betting game** where players choose their champion 
 - **🎨 Smooth Animations**: Car movements, countdown timers, and transitions
 - **🔄 Interactive Elements**: Touch-friendly buttons with visual feedback
 
-## 📸 Screenshots
-
-| Main Menu | Car Selection | Racing Action | Achievements |
-|-----------|---------------|---------------|--------------|
-| ![Main](screenshots/main_screen.png) | ![Betting](screenshots/betting_screen.png) | ![Racing](screenshots/racing_screen.png) | ![Achievements](screenshots/achievements_screen.png) |
-
 ## 🚀 Installation
 
 ### Prerequisites
