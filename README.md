@@ -183,25 +183,12 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
-
-**Zun1702**
-- GitHub: [@Zun1702](https://github.com/Zun1702)
-- Project: [CarRacingF4](https://github.com/Zun1702/CarRacingF4)
-
 ## 🙏 Acknowledgments
 
 - **Android Developer Community** for excellent documentation
 - **Material Design** for beautiful UI components
 - **Open Source Contributors** for inspiration and best practices
 - **Beta Testers** for valuable feedback and bug reports
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-- 🐛 **Bug Reports**: [Create an Issue](https://github.com/Zun1702/CarRacingF4/issues)
-- 💡 **Feature Requests**: [Discussion Forum](https://github.com/Zun1702/CarRacingF4/discussions)
-- 📧 **Contact**: Open an issue for support
 
 ---
 
