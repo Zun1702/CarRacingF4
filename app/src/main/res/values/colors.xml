@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Basic colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Primary Theme Colors -->
+    <color name="primary_red">#FF1744</color>
+    <color name="primary_red_dark">#C62828</color>
+    <color name="accent_yellow">#FFD600</color>
+    <color name="accent_yellow_dark">#FF8F00</color>
+    
+    <!-- Racing Colors -->
+    <color name="track_gray">#424242</color>
+    <color name="track_light_gray">#616161</color>
+    <color name="finish_line">#ECEFF1</color>
+    <color name="grass_green">#4CAF50</color>
+    
+    <!-- Car Colors -->
+    <color name="car_red">#F44336</color>
+    <color name="car_blue">#2196F3</color>
+    <color name="car_green">#4CAF50</color>
+    <color name="car_yellow">#FFEB3B</color>
+    <color name="car_purple">#9C27B0</color>
+    <color name="car_orange">#FF9800</color>
+    
+    <!-- UI Colors -->
+    <color name="background_dark">#1A1A1A</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="dark_blue">#1A237E</color>
+    <color name="card_background">#2C2C2C</color>
+    <color name="light_gray">#EEEEEE</color>
+    <color name="button_background">#FF1744</color>
+    <color name="button_text">#FFFFFF</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="win_background">#1B4332</color>
+    
+    <!-- Status Colors -->
+    <color name="win_green">#4CAF50</color>
+    <color name="lose_red">#F44336</color>
+    <color name="warning_orange">#FF9800</color>
+    <color name="info_blue">#2196F3</color>
+    
+    <!-- Transparent Colors -->
+    <color name="overlay_dark">#80000000</color>
+    <color name="overlay_light">#40FFFFFF</color>
+</resources>

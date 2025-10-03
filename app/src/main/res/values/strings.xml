@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Car Racing Bet</string>
+    
+    <!-- Main Screen -->
+    <string name="main_title">🏁 CAR RACING BET</string>
+    <string name="enter_name_hint">Enter your name</string>
+    <string name="start_game_button">START GAME</string>
+    <string name="welcome_message">Welcome to the ultimate racing betting experience!</string>
+    
+    <!-- Betting Screen -->
+    <string name="betting_title">Choose Your Champion</string>
+    <string name="select_car">Select a car to bet on:</string>
+    <string name="bet_amount">Bet Amount:</string>
+    <string name="start_race_button">START RACE</string>
+    <string name="player_balance">Balance: %d coins</string>
+    <string name="potential_winnings">Potential Winnings: %d coins</string>
+    
+    <!-- Racing Screen -->
+    <string name="racing_title">🏁 RACE IN PROGRESS</string>
+    <string name="race_starting">Race starting in...</string>
+    <string name="go_signal">GO!</string>
+    <string name="position_display">Position %d</string>
+    
+    <!-- Result Screen -->
+    <string name="result_title">Race Results</string>
+    <string name="winner_announcement">🏆 Winner: %s</string>
+    <string name="you_won">🎉 Congratulations! You won %d coins!</string>
+    <string name="you_lost">😢 Better luck next time! You lost %d coins.</string>
+    <string name="play_again_button">PLAY AGAIN</string>
+    <string name="main_menu_button">MAIN MENU</string>
+    
+    <!-- Car Names -->
+    <string name="car_red_thunder">Red Thunder</string>
+    <string name="car_blue_lightning">Blue Lightning</string>
+    <string name="car_green_machine">Green Machine</string>
+    <string name="car_yellow_bullet">Yellow Bullet</string>
+    <string name="car_purple_phantom">Purple Phantom</string>
+    
+    <!-- Error Messages -->
+    <string name="error_empty_name">Please enter your name</string>
+    <string name="error_no_car_selected">Please select a car</string>
+    <string name="error_invalid_bet">Invalid bet amount</string>
+    <string name="error_insufficient_funds">Insufficient funds</string>
+    
+    <!-- General -->
+    <string name="loading">Loading...</string>
+    <string name="coins">coins</string>
+</resources>

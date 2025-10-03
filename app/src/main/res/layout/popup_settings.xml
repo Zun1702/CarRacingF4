@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/background_gradient"
+    android:gravity="center">
+
+    <!-- Settings Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⚙️ Game Settings"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/accent_yellow"
+        android:textAlignment="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Settings Options Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Sound Settings -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:padding="12dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="#33FFFFFF">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🔊 Sound Effects"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="start|center_vertical" />
+
+            <Switch
+                android:id="@+id/switchSound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <!-- Music Settings -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:padding="12dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="#33FFFFFF">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🎵 Background Music"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="start|center_vertical" />
+
+            <Switch
+                android:id="@+id/switchMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <!-- Reset Game Button -->
+        <Button
+            android:id="@+id/btnResetGamePopup"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="🔄 Reset Game Data"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="#FF6B6B"
+            android:layout_marginBottom="16dp"
+            android:gravity="center" />
+
+        <!-- Close Button -->
+        <Button
+            android:id="@+id/btnCloseSettings"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="✖️ Close"
+            android:textSize="14sp"
+            android:textColor="@color/accent_yellow"
+            android:background="@android:color/transparent"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</LinearLayout>

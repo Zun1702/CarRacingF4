@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Button Styles -->
+    <style name="RacingButton" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/button_racing</item>
+        <item name="android:textColor">@color/button_text</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+    
+    <style name="RacingButtonSecondary" parent="RacingButton">
+        <item name="android:background">@drawable/button_secondary</item>
+        <item name="android:textColor">@color/primary_red</item>
+    </style>
+    
+    <!-- Text Styles -->
+    <style name="GameTitleText">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_red</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:shadowColor">@color/black</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">4</item>
+    </style>
+    
+    <style name="SectionTitleText">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_red_dark</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+    
+    <style name="PlayerNameText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent_yellow_dark</item>
+    </style>
+    
+    <style name="BalanceText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/win_green</item>
+    </style>
+    
+    <!-- Input Styles -->
+    <style name="RacingEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+    
+    <!-- Card Styles -->
+    <style name="CarCard">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:elevation">6dp</item>
+        <item name="android:background">@drawable/card_background</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    
+    <!-- Layout Styles -->
+    <style name="ScreenContainer">
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/background_gradient</item>
+    </style>
+    
+    <!-- Racing Specific -->
+    <style name="RaceTrack">
+        <item name="android:background">@drawable/race_track_background</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+    
+    <style name="CarImageView">
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+</resources>

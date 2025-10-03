@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:padding="16dp"
+    tools:context=".RacingActivity">
+
+    <!-- Race Title -->
+    <TextView
+        android:id="@+id/tvRaceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/racing_title"
+        style="@style/GameTitleText"
+        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Race Info -->
+    <TextView
+        android:id="@+id/tvRaceInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Your Bet: 100 coins on Red Thunder"
+        android:textSize="16sp"
+        android:textColor="@color/accent_yellow"
+        android:textAlignment="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRaceTitle" />
+
+    <!-- Countdown Text -->
+    <TextView
+        android:id="@+id/tvCountdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="80sp"
+        android:textStyle="bold"
+        android:textColor="@color/accent_yellow"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Race Track Container -->
+    <ScrollView
+        android:id="@+id/svRaceTrack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/llPositions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRaceInfo">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Race Lane 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/race_track_background"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCar1"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/car_red"
+                    android:layout_marginStart="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressCar1"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:progressTint="@color/car_red"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+            <!-- Race Lane 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/race_track_background"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCar2"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/car_blue"
+                    android:layout_marginStart="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressCar2"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:progressTint="@color/car_blue"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+            <!-- Race Lane 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/race_track_background"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCar3"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/car_green"
+                    android:layout_marginStart="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressCar3"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:progressTint="@color/car_green"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+            <!-- Race Lane 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/race_track_background"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCar4"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/car_yellow"
+                    android:layout_marginStart="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressCar4"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:progressTint="@color/car_yellow"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+            <!-- Race Lane 5 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@drawable/race_track_background"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivCar5"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/car_purple"
+                    android:layout_marginStart="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressCar5"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:progressTint="@color/car_purple"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Position Display -->
+    <LinearLayout
+        android:id="@+id/llPositions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:padding="12dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🏆 Current Positions"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_red_dark"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/tvPosition1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1. Red"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvPosition2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2. Blue"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvPosition3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3. Green"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvPosition4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4. Yellow"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvPosition5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="5. Purple"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
