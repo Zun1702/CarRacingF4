@@ -146,22 +146,6 @@ app/
 - **Input Validation**: User input sanitization
 - **Memory Management**: Efficient resource handling
 
-## 🎯 Roadmap
-
-### Upcoming Features
-- [ ] **🏆 Tournament Mode**: Multi-race championships
-- [ ] **🌐 Online Leaderboards**: Global player rankings
-- [ ] **🎨 Car Customization**: Visual car modifications
-- [ ] **💎 Premium Features**: Additional cars and tracks
-- [ ] **🎵 Background Music**: Enhanced audio experience
-- [ ] **📱 Social Features**: Share achievements and results
-
-### Technical Improvements
-- [ ] **🔄 Auto-save**: Background game state saving
-- [ ] **📊 Advanced Analytics**: Detailed performance metrics
-- [ ] **🎮 Gesture Controls**: Swipe-based interactions
-- [ ] **🌙 Dark Mode**: Theme customization options
-
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
