@@ -19,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.carracing.utils.CarAnimationUtils;
+
 public class MainActivity extends AppCompatActivity {
     
     private EditText etPlayerName;
@@ -61,6 +63,21 @@ public class MainActivity extends AppCompatActivity {
         ivCarDemo1 = findViewById(R.id.ivCarDemo1);
         ivCarDemo2 = findViewById(R.id.ivCarDemo2);
         ivCarDemo3 = findViewById(R.id.ivCarDemo3);
+        
+        // Add logos with animations
+        ImageView ivF1Logo = findViewById(R.id.ivF1Logo);
+        ImageView ivRacingCarLogo = findViewById(R.id.ivRacingCarLogo);
+        
+        // Add subtle animation to F1 logo
+        addLogoAnimation(ivF1Logo);
+        
+        // Add pulse animation to racing car logo
+        addPulseAnimation(ivRacingCarLogo);
+        
+        // Set enhanced PNG racing cars with animation for all demo cars (display mode)
+        CarAnimationUtils.toggleCarAnimation(this, ivCarDemo1, true, 0); // Red car
+        CarAnimationUtils.toggleCarAnimation(this, ivCarDemo2, true, 1); // Blue car
+        CarAnimationUtils.toggleCarAnimation(this, ivCarDemo3, true, 2); // Green car
     }
     
     private void setupPreferences() {
@@ -312,6 +329,33 @@ public class MainActivity extends AppCompatActivity {
         if (audioManager != null) {
             audioManager.onPause();
         }
+    }
+    
+    /**
+     * Add subtle rotation animation to F1 logo
+     */
+    private void addLogoAnimation(ImageView logoView) {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(logoView, "rotation", 0f, 5f, 0f, -5f, 0f);
+        rotation.setDuration(3000);
+        rotation.setRepeatCount(ObjectAnimator.INFINITE);
+        rotation.start();
+    }
+    
+    /**
+     * Add pulse animation to racing car logo
+     */
+    private void addPulseAnimation(ImageView logoView) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(logoView, "scaleX", 1.0f, 1.1f, 1.0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(logoView, "scaleY", 1.0f, 1.1f, 1.0f);
+        
+        scaleX.setDuration(2000);
+        scaleY.setDuration(2000);
+        
+        scaleX.setRepeatCount(ObjectAnimator.INFINITE);
+        scaleY.setRepeatCount(ObjectAnimator.INFINITE);
+        
+        scaleX.start();
+        scaleY.start();
     }
     
     @Override

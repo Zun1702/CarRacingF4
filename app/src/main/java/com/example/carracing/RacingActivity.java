@@ -3,6 +3,8 @@ package com.example.carracing;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -19,6 +21,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.carracing.utils.CarAnimationUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +31,7 @@ public class RacingActivity extends AppCompatActivity {
     
     private TextView tvRaceTitle, tvCountdown, tvRaceInfo, tvSkipInstruction;
     private ImageView[] carImageViews;
+    private ImageView[] smokeImageViews; // For exhaust smoke effects
     private ProgressBar[] progressBars;
     private TextView[] positionTexts;
     
@@ -42,6 +47,17 @@ public class RacingActivity extends AppCompatActivity {
     private int selectedCarId;
     private String selectedCarName;
     private float selectedCarOdds;
+    
+    // Lane mapping: Cars stay in their original lanes based on color
+    // Car array:    0=Red, 1=Blue,  2=Green, 3=Orange, 4=Purple
+    // Lane mapping: 0=Red, 1=Blue,  2=Green, 3=Orange, 4=Purple (same as car array)
+    private int[] laneToCarMapping = {0, 1, 2, 3, 4}; // Lane index -> Car array index (same)
+    private int[] carToLaneMapping = {0, 1, 2, 3, 4}; // Car index -> Lane index (same)
+    
+    // Helper method to get lane index from car index
+    private int getLaneFromCarIndex(int carIndex) {
+        return carToLaneMapping[carIndex];
+    }
     
     // Multi-betting support
     private boolean isMultiBet = false;
@@ -126,6 +142,14 @@ public class RacingActivity extends AppCompatActivity {
         carImageViews[2] = findViewById(R.id.ivCar3);
         carImageViews[3] = findViewById(R.id.ivCar4);
         carImageViews[4] = findViewById(R.id.ivCar5);
+        
+        // Initialize smoke ImageViews 
+        smokeImageViews = new ImageView[5];
+        smokeImageViews[0] = findViewById(R.id.ivSmoke1);
+        smokeImageViews[1] = findViewById(R.id.ivSmoke2);
+        smokeImageViews[2] = findViewById(R.id.ivSmoke3);
+        smokeImageViews[3] = findViewById(R.id.ivSmoke4);
+        smokeImageViews[4] = findViewById(R.id.ivSmoke5);
         
         // Initialize progress bars
         progressBars = new ProgressBar[5];
@@ -474,16 +498,18 @@ public class RacingActivity extends AppCompatActivity {
     
     private void setupRacingCars() {
         racingCars = new ArrayList<>();
-        // Use EXACT same balanced stats as BettingActivity
-        racingCars.add(new Car(0, "Red Thunder", R.drawable.car_red, R.color.car_red, 82, 2.1f));
-        racingCars.add(new Car(1, "Blue Lightning", R.drawable.car_blue, R.color.car_blue, 84, 2.0f));
-        racingCars.add(new Car(2, "Green Machine", R.drawable.car_green, R.color.car_green, 81, 2.2f));
-        racingCars.add(new Car(3, "Yellow Bullet", R.drawable.car_yellow, R.color.car_yellow, 83, 2.0f));
-        racingCars.add(new Car(4, "Purple Phantom", R.drawable.car_purple, R.color.car_purple, 80, 2.3f));
+        // Use EXACT same balanced stats as BettingActivity with racing PNG images
+        racingCars.add(new Car(0, "Red Thunder", R.drawable.racingcar_red, R.color.car_red, 82, 2.1f));
+        racingCars.add(new Car(1, "Blue Lightning", R.drawable.racingcar_blue, R.color.car_blue, 84, 2.0f));
+        racingCars.add(new Car(2, "Green Machine", R.drawable.racingcar_green, R.color.car_green, 81, 2.2f));
+        racingCars.add(new Car(3, "Orange Bullet", R.drawable.racingcar_orange, R.color.car_yellow, 83, 2.0f));
+        racingCars.add(new Car(4, "Purple Phantom", R.drawable.racingcar_purple, R.color.car_purple, 80, 2.3f));
         
-        // Set car images
+        // Set car images with racing-safe effects for all cars
+        // Simple 1:1 mapping: car index matches lane index
         for (int i = 0; i < racingCars.size(); i++) {
-            carImageViews[i].setImageResource(racingCars.get(i).getDrawableResource());
+            // Use racing-safe effects with appropriate car color
+            CarAnimationUtils.setCarForRacing(this, carImageViews[i], true, i);
             progressBars[i].setMax(RACE_DISTANCE);
             progressBars[i].setProgress(0);
             positionTexts[i].setText(racingCars.get(i).getName());
@@ -492,6 +518,20 @@ public class RacingActivity extends AppCompatActivity {
             if (racingCars.get(i).getId() == selectedCarId) {
                 positionTexts[i].setTextColor(getResources().getColor(R.color.accent_yellow));
                 positionTexts[i].setText("★ " + racingCars.get(i).getName());
+            }
+        }
+        
+        // Start smoke animations
+        startSmokeAnimations();
+    }
+    
+    private void startSmokeAnimations() {
+        for (int i = 0; i < smokeImageViews.length; i++) {
+            if (smokeImageViews[i] != null) {
+                Drawable smokeDrawable = smokeImageViews[i].getDrawable();
+                if (smokeDrawable instanceof Animatable) {
+                    ((Animatable) smokeDrawable).start();
+                }
             }
         }
     }
@@ -660,6 +700,15 @@ public class RacingActivity extends AppCompatActivity {
         float maxTranslation = getResources().getDisplayMetrics().widthPixels * 0.6f;
         float translationX = progress * maxTranslation;
         carView.setTranslationX(translationX);
+        
+        // Move smoke with car (find car index and move corresponding smoke)
+        for (int i = 0; i < carImageViews.length; i++) {
+            if (carImageViews[i] == carView && smokeImageViews[i] != null) {
+                // Smoke should be slightly behind the bigger car
+                smokeImageViews[i].setTranslationX(translationX - 30);
+                break;
+            }
+        }
     }
     
     private boolean checkCollision(Car currentCar, int newPosition, int currentCarIndex) {

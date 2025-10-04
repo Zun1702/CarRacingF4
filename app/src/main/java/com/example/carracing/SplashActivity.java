@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
     
-    private ImageView ivLogo;
-    private TextView tvGameTitle, tvLoadingText;
+    private ImageView ivF1Logo, ivRacingCarLogo;
+    private TextView tvGameTitle, tvSubtitle, tvLoadingText;
     private ProgressBar pbLoading;
     private Handler handler;
     
@@ -31,8 +31,10 @@ public class SplashActivity extends AppCompatActivity {
     }
     
     private void initializeViews() {
-        ivLogo = findViewById(R.id.ivLogo);
+        ivF1Logo = findViewById(R.id.ivF1Logo);
+        ivRacingCarLogo = findViewById(R.id.ivRacingCarLogo);
         tvGameTitle = findViewById(R.id.tvGameTitle);
+        tvSubtitle = findViewById(R.id.tvSubtitle);
         tvLoadingText = findViewById(R.id.tvLoadingText);
         pbLoading = findViewById(R.id.pbLoading);
         
@@ -40,23 +42,39 @@ public class SplashActivity extends AppCompatActivity {
     }
     
     private void startAnimations() {
-        // Logo fade in animation
-        Animation fadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        fadeIn.setDuration(1000);
-        ivLogo.startAnimation(fadeIn);
+        // F1 Logo fade in and scale animation
+        Animation f1FadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        f1FadeIn.setDuration(1000);
+        ivF1Logo.startAnimation(f1FadeIn);
+        ivF1Logo.setAlpha(1.0f);
         
-        // Title slide up animation
-        Animation slideUp = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-        slideUp.setDuration(1200);
-        slideUp.setStartOffset(500);
-        tvGameTitle.startAnimation(slideUp);
+        // Racing Car Logo slide up animation with delay
+        Animation racingCarSlideUp = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        racingCarSlideUp.setDuration(1200);
+        racingCarSlideUp.setStartOffset(500);
+        ivRacingCarLogo.startAnimation(racingCarSlideUp);
+        ivRacingCarLogo.setAlpha(1.0f);
+        
+        // Title fade in animation
+        Animation titleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        titleFadeIn.setDuration(1000);
+        titleFadeIn.setStartOffset(1000);
+        tvGameTitle.startAnimation(titleFadeIn);
+        tvGameTitle.setAlpha(1.0f);
+        
+        // Subtitle fade in animation
+        Animation subtitleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        subtitleFadeIn.setDuration(800);
+        subtitleFadeIn.setStartOffset(1500);
+        tvSubtitle.startAnimation(subtitleFadeIn);
+        tvSubtitle.setAlpha(1.0f);
         
         // Loading text blink animation
         Animation blink = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         blink.setDuration(800);
         blink.setRepeatMode(Animation.REVERSE);
         blink.setRepeatCount(Animation.INFINITE);
-        blink.setStartOffset(1000);
+        blink.setStartOffset(2000);
         tvLoadingText.startAnimation(blink);
     }
     

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    
+    <aapt:attr name="android:drawable">
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="64dp"
+            android:height="32dp"
+            android:viewportWidth="64"
+            android:viewportHeight="32">
+            
+            <!-- F1 Racing Car Body -->
+            <group android:name="car_body">
+                <!-- Main chassis -->
+                <path
+                    android:fillColor="@color/car_red"
+                    android:pathData="M10,14 L50,14 L54,16 L58,18 Q60,18 60,20 L60,22 Q60,24 58,24 L54,24 L50,26 L10,26 Q6,26 6,22 L6,18 Q6,14 10,14 Z" />
+                
+                <!-- Front wing -->
+                <path
+                    android:fillColor="@color/car_red"
+                    android:pathData="M54,16 L62,16 Q64,16 64,18 L64,20 Q64,22 62,22 L54,22 Z" />
+                
+                <!-- Rear wing -->
+                <path
+                    android:fillColor="@color/car_red"
+                    android:pathData="M4,12 L10,12 L10,16 L4,16 Q2,16 2,14 Q2,12 4,12 Z" />
+                
+                <!-- Side panels -->
+                <path
+                    android:fillColor="#CC0000"
+                    android:pathData="M10,16 L50,16 L50,24 L10,24 Z" />
+                
+                <!-- Cockpit -->
+                <path
+                    android:fillColor="#990000"
+                    android:pathData="M25,12 L40,12 Q42,12 42,14 L42,16 L25,16 Q23,16 23,14 Q23,12 25,12 Z" />
+                
+                <!-- Driver helmet (tiny) -->
+                <path
+                    android:fillColor="#FFD700"
+                    android:pathData="M30,10 Q32,10 32,12 Q32,14 30,14 Q28,14 28,12 Q28,10 30,10 Z" />
+            </group>
+            
+            <!-- F1 Racing Wheels -->
+            <group android:name="wheel1"
+                android:pivotX="15"
+                android:pivotY="20">
+                <!-- Front wheel (larger) -->
+                <path
+                    android:fillColor="@color/black"
+                    android:pathData="M15,16 A4,4 0 1,1 15,24 A4,4 0 1,1 15,16 Z" />
+                <!-- Rim design -->
+                <path
+                    android:fillColor="#333333"
+                    android:pathData="M15,17 A3,3 0 1,1 15,23 A3,3 0 1,1 15,17 Z" />
+                <!-- Spokes -->
+                <path
+                    android:fillColor="#666666"
+                    android:pathData="M15,17 L15,23 M12,20 L18,20 M13,18 L17,22 M13,22 L17,18" 
+                    android:strokeWidth="0.5"
+                    android:strokeColor="#999999"/>
+            </group>
+            
+            <!-- Rear Wheel -->
+            <group android:name="wheel2"
+                android:pivotX="48"
+                android:pivotY="20">
+                <!-- Rear wheel (larger for F1) -->
+                <path
+                    android:fillColor="@color/black"
+                    android:pathData="M48,15 A5,5 0 1,1 48,25 A5,5 0 1,1 48,15 Z" />
+                <!-- Rim design -->
+                <path
+                    android:fillColor="#333333"
+                    android:pathData="M48,16 A4,4 0 1,1 48,24 A4,4 0 1,1 48,16 Z" />
+                <!-- Spokes -->
+                <path
+                    android:fillColor="#666666"
+                    android:pathData="M48,16 L48,24 M44,20 L52,20 M45,17 L51,23 M45,23 L51,17" 
+                    android:strokeWidth="0.8"
+                    android:strokeColor="#999999"/>
+            </group>
+            
+            <!-- Heavy Exhaust Smoke Effects -->
+            <group android:name="smoke1">
+                <!-- Large smoke cloud 1 -->
+                <path
+                    android:fillColor="#60606060"
+                    android:pathData="M2,18 Q0,18 0,20 Q0,22 2,22 Q4,22 4,20 Q4,18 2,18 Z" />
+                <!-- Large smoke cloud 2 -->
+                <path
+                    android:fillColor="#80505050"
+                    android:pathData="M1,16 Q-1,16 -1,18 Q-1,20 1,20 Q3,20 3,18 Q3,16 1,16 Z" />
+                <!-- Large smoke cloud 3 -->
+                <path
+                    android:fillColor="#70404040"
+                    android:pathData="M3,20 Q1,20 1,22 Q1,24 3,24 Q5,24 5,22 Q5,20 3,20 Z" />
+            </group>
+            
+            <group android:name="smoke2">
+                <!-- Medium smoke trails -->
+                <path
+                    android:fillColor="#50707070"
+                    android:pathData="M4,17 Q2,17 2,19 Q2,21 4,21 Q6,21 6,19 Q6,17 4,17 Z" />
+                <path
+                    android:fillColor="#40808080"
+                    android:pathData="M5,19 Q3,19 3,21 Q3,23 5,23 Q7,23 7,21 Q7,19 5,19 Z" />
+                <path
+                    android:fillColor="#60606060"
+                    android:pathData="M2,21 Q0,21 0,23 Q0,25 2,25 Q4,25 4,23 Q4,21 2,21 Z" />
+            </group>
+            
+            <group android:name="smoke3">
+                <!-- Small smoke particles -->
+                <path
+                    android:fillColor="#30909090"
+                    android:pathData="M6,18 Q5,18 5,19 Q5,20 6,20 Q7,20 7,19 Q7,18 6,18 Z" />
+                <path
+                    android:fillColor="#40858585"
+                    android:pathData="M7,20 Q6,20 6,21 Q6,22 7,22 Q8,22 8,21 Q8,20 7,20 Z" />
+                <path
+                    android:fillColor="#35757575"
+                    android:pathData="M4,22 Q3,22 3,23 Q3,24 4,24 Q5,24 5,23 Q5,22 4,22 Z" />
+            </group>
+        </vector>
+    </aapt:attr>
+    
+    <!-- Front Wheel Fast Rotation -->
+    <target android:name="wheel1">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="rotation"
+                android:duration="300"
+                android:valueFrom="0"
+                android:valueTo="360"
+                android:repeatCount="infinite"
+                android:interpolator="@android:anim/linear_interpolator" />
+        </aapt:attr>
+    </target>
+    
+    <!-- Rear Wheel Faster Rotation -->
+    <target android:name="wheel2">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="rotation"
+                android:duration="250"
+                android:valueFrom="0"
+                android:valueTo="360"
+                android:repeatCount="infinite"
+                android:interpolator="@android:anim/linear_interpolator" />
+        </aapt:attr>
+    </target>
+    
+    <!-- Racing Car Vibration -->
+    <target android:name="car_body">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="translateY"
+                    android:duration="150"
+                    android:valueFrom="0"
+                    android:valueTo="-0.5"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:duration="100"
+                    android:valueFrom="0"
+                    android:valueTo="0.3"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+            </set>
+        </aapt:attr>
+    </target>
+    
+    <!-- Heavy Smoke Animation 1 -->
+    <target android:name="smoke1">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="alpha"
+                    android:duration="800"
+                    android:valueFrom="0.9"
+                    android:valueTo="0.3"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:duration="600"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.8"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="700"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.6"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:duration="1000"
+                    android:valueFrom="0"
+                    android:valueTo="-3"
+                    android:repeatCount="infinite"
+                    android:repeatMode="restart" />
+            </set>
+        </aapt:attr>
+    </target>
+    
+    <!-- Heavy Smoke Animation 2 -->
+    <target android:name="smoke2">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="alpha"
+                    android:duration="1000"
+                    android:valueFrom="0.8"
+                    android:valueTo="0.2"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:duration="800"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.5"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="900"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.4"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:duration="1200"
+                    android:valueFrom="0"
+                    android:valueTo="-4"
+                    android:repeatCount="infinite"
+                    android:repeatMode="restart" />
+            </set>
+        </aapt:attr>
+    </target>
+    
+    <!-- Heavy Smoke Animation 3 -->
+    <target android:name="smoke3">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="alpha"
+                    android:duration="600"
+                    android:valueFrom="0.7"
+                    android:valueTo="0.1"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:duration="500"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.3"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="550"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.2"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse" />
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:duration="800"
+                    android:valueFrom="0"
+                    android:valueTo="-2"
+                    android:repeatCount="infinite"
+                    android:repeatMode="restart" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

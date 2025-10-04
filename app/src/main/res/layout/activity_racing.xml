@@ -89,178 +89,268 @@
             android:padding="8dp">
 
             <!-- Race Lane 1 -->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:orientation="horizontal"
                 android:background="@drawable/race_track_background"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="4dp">
 
-                <ImageView
-                    android:id="@+id/ivCar1"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/car_red"
-                    android:layout_marginStart="8dp" />
-
+                <!-- Progress bar (đằng sau) -->
                 <ProgressBar
                     android:id="@+id/progressCar1"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="50dp"
                     android:progressTint="@color/car_red"
                     android:backgroundTint="@color/track_light_gray" />
 
+                <!-- Exhaust smoke (đằng sau xe) -->
+                <ImageView
+                    android:id="@+id/ivSmoke1"
+                    android:layout_width="36dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/exhaust_smoke_animated"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+                    android:alpha="0.8"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9" />
+
+                <!-- Car (đằng trước) -->
+                <ImageView
+                    android:id="@+id/ivCar1"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/racingcar_red" />
+
+                <!-- Finish flag -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🏁"
                     android:textSize="20sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Race Lane 2 -->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:orientation="horizontal"
                 android:background="@drawable/race_track_background"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="4dp">
 
-                <ImageView
-                    android:id="@+id/ivCar2"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/car_blue"
-                    android:layout_marginStart="8dp" />
-
+                <!-- Progress bar (đằng sau) -->
                 <ProgressBar
                     android:id="@+id/progressCar2"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
-                    android:progressTint="@color/car_blue"
-                    android:backgroundTint="@color/track_light_gray" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🏁"
-                    android:textSize="20sp"
-                    android:layout_marginEnd="8dp" />
-
-            </LinearLayout>
-
-            <!-- Race Lane 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/race_track_background"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/ivCar3"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/car_green"
-                    android:layout_marginStart="8dp" />
-
-                <ProgressBar
-                    android:id="@+id/progressCar3"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="50dp"
                     android:progressTint="@color/car_green"
                     android:backgroundTint="@color/track_light_gray" />
 
+                <!-- Exhaust smoke (đằng sau xe) -->
+                <ImageView
+                    android:id="@+id/ivSmoke2"
+                    android:layout_width="36dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/exhaust_smoke_animated"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+                    android:alpha="0.8"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9" />
+
+                <!-- Car (đằng trước) -->
+                <ImageView
+                    android:id="@+id/ivCar2"
+                    android:layout_width="60dp"
+                    android:layout_height="29dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/racingcar_blue" />
+
+                <!-- Finish flag -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🏁"
                     android:textSize="20sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <!-- Race Lane 4 -->
-            <LinearLayout
+            <!-- Race Lane 3 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:orientation="horizontal"
                 android:background="@drawable/race_track_background"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="4dp">
 
+                <!-- Progress bar (đằng sau) -->
+                <ProgressBar
+                    android:id="@+id/progressCar3"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="50dp"
+                    android:progressTint="@color/car_blue"
+                    android:backgroundTint="@color/track_light_gray" />
+
+                <!-- Exhaust smoke (đằng sau xe) -->
                 <ImageView
-                    android:id="@+id/ivCar4"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/car_yellow"
-                    android:layout_marginStart="8dp" />
+                    android:id="@+id/ivSmoke3"
+                    android:layout_width="36dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/exhaust_smoke_animated"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+                    android:alpha="0.8"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9" />
 
+                <!-- Car (đằng trước) -->
+                <ImageView
+                    android:id="@+id/ivCar3"
+                    android:layout_width="57dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/racingcar_blue" />
+
+                <!-- Finish flag -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏁"
+                    android:textSize="20sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp" />
+
+            </RelativeLayout>
+
+            <!-- Race Lane 4 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/race_track_background"
+                android:layout_marginBottom="4dp">
+
+                <!-- Progress bar (đằng sau) -->
                 <ProgressBar
                     android:id="@+id/progressCar4"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="50dp"
                     android:progressTint="@color/car_yellow"
                     android:backgroundTint="@color/track_light_gray" />
 
+                <!-- Exhaust smoke (đằng sau xe) -->
+                <ImageView
+                    android:id="@+id/ivSmoke4"
+                    android:layout_width="36dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/exhaust_smoke_animated"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+                    android:alpha="0.8"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9" />
+
+                <!-- Car (đằng trước) -->
+                <ImageView
+                    android:id="@+id/ivCar4"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/racingcar_orange"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerInside" />
+
+                <!-- Finish flag -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🏁"
                     android:textSize="20sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Race Lane 5 -->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/race_track_background"
-                android:gravity="center_vertical">
+                android:background="@drawable/race_track_background">
 
-                <ImageView
-                    android:id="@+id/ivCar5"
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/car_purple"
-                    android:layout_marginStart="8dp" />
-
+                <!-- Progress bar (đằng sau) -->
                 <ProgressBar
                     android:id="@+id/progressCar5"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="50dp"
                     android:progressTint="@color/car_purple"
                     android:backgroundTint="@color/track_light_gray" />
 
+                <!-- Exhaust smoke (đằng sau xe) -->
+                <ImageView
+                    android:id="@+id/ivSmoke5"
+                    android:layout_width="36dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/exhaust_smoke_animated"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+                    android:alpha="0.8"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9" />
+
+                <!-- Car (đằng trước) -->
+                <ImageView
+                    android:id="@+id/ivCar5"
+                    android:layout_width="75dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/racingcar_purple" />
+
+                <!-- Finish flag -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🏁"
                     android:textSize="20sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

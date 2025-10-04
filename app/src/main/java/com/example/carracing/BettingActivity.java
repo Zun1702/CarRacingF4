@@ -90,12 +90,12 @@ public class BettingActivity extends AppCompatActivity {
     
     private void setupCarList() {
         carList = new ArrayList<>();
-        // Rebalanced cars with similar base speeds for fair racing
-        carList.add(new Car(0, "Red Thunder", R.drawable.car_red, R.color.car_red, 82, 2.1f));
-        carList.add(new Car(1, "Blue Lightning", R.drawable.car_blue, R.color.car_blue, 84, 2.0f));
-        carList.add(new Car(2, "Green Machine", R.drawable.car_green, R.color.car_green, 81, 2.2f));
-        carList.add(new Car(3, "Yellow Bullet", R.drawable.car_yellow, R.color.car_yellow, 83, 2.0f));
-        carList.add(new Car(4, "Purple Phantom", R.drawable.car_purple, R.color.car_purple, 80, 2.3f));
+        // Rebalanced cars with racing PNG images - correct order: red, blue, green, orange, purple
+        carList.add(new Car(0, "Red Thunder", R.drawable.racingcar_red, R.color.car_red, 82, 2.1f));
+        carList.add(new Car(1, "Blue Lightning", R.drawable.racingcar_blue, R.color.car_blue, 84, 2.0f));
+        carList.add(new Car(2, "Green Machine", R.drawable.racingcar_green, R.color.car_green, 81, 2.2f));
+        carList.add(new Car(3, "Orange Bullet", R.drawable.racingcar_orange, R.color.car_yellow, 83, 2.0f));
+        carList.add(new Car(4, "Purple Phantom", R.drawable.racingcar_purple, R.color.car_purple, 80, 2.3f));
         
         // Setup RecyclerView
         carAdapter = new CarAdapter(carList, this::onCarSelected);

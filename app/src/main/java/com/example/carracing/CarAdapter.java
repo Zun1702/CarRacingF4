@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carracing.utils.CarAnimationUtils;
+
 import java.util.List;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
@@ -46,7 +48,9 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         
         holder.tvCarName.setText(car.getName());
         holder.tvCarStats.setText("Speed: " + car.getBaseSpeed() + " | Odds: " + car.getOdds() + "x");
-        holder.ivCarImage.setImageResource(car.getDrawableResource());
+        
+        // Use display effects for all cars in car selection with correct color
+        CarAnimationUtils.toggleCarAnimation(holder.itemView.getContext(), holder.ivCarImage, true, car.getId());
         
         // Handle selection based on mode
         boolean isSelected = isMultiBettingMode ? 
