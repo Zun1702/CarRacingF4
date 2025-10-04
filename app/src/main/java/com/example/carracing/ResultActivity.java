@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ResultActivity extends AppCompatActivity {
     
     private TextView tvResultType, tvWinnerAnnouncement, tvBetResult, tvBalanceUpdate;
-    private ImageView ivResultIcon;
+    private TextView tvSelectedCar, tvBetAmount, tvRaceWinner;
     private Button btnPlayAgain, btnMainMenu;
     
     private String playerName;
@@ -92,9 +92,13 @@ public class ResultActivity extends AppCompatActivity {
         tvWinnerAnnouncement = findViewById(R.id.tvWinnerAnnouncement);
         tvBetResult = findViewById(R.id.tvBetResult);
         tvBalanceUpdate = findViewById(R.id.tvBalanceUpdate);
-        ivResultIcon = findViewById(R.id.ivResultIcon);
         btnPlayAgain = findViewById(R.id.btnPlayAgain);
         btnMainMenu = findViewById(R.id.btnMainMenu);
+        
+        // Race summary TextViews
+        tvSelectedCar = findViewById(R.id.tvSelectedCar);
+        tvBetAmount = findViewById(R.id.tvBetAmount);
+        tvRaceWinner = findViewById(R.id.tvRaceWinner);
     }
     
     private void setupPreferences() {
@@ -219,9 +223,6 @@ public class ResultActivity extends AppCompatActivity {
             tvBetResult.setText(String.format(getString(R.string.you_won), winnings));
             tvBetResult.setTextColor(getResources().getColor(R.color.win_green));
             
-            ivResultIcon.setImageResource(android.R.drawable.star_big_on);
-            ivResultIcon.setColorFilter(getResources().getColor(R.color.accent_yellow));
-            
         } else {
             // Player lost
             tvResultType.setText("😢 BETTER LUCK NEXT TIME");
@@ -229,9 +230,6 @@ public class ResultActivity extends AppCompatActivity {
             
             tvBetResult.setText(String.format(getString(R.string.you_lost), betAmount));
             tvBetResult.setTextColor(getResources().getColor(R.color.lose_red));
-            
-            ivResultIcon.setImageResource(android.R.drawable.ic_delete);
-            ivResultIcon.setColorFilter(getResources().getColor(R.color.lose_red));
         }
         
         // Display balance update
@@ -243,6 +241,9 @@ public class ResultActivity extends AppCompatActivity {
         // Show additional information
         String detailText = "Your bet: " + betAmount + " coins on " + selectedCarName + "\n" +
                            "Race winner: " + winnerCarName;
+        
+        // Populate race summary
+        populateRaceSummary();
     }
     
     private void displayMultiBetResults() {
@@ -251,19 +252,13 @@ public class ResultActivity extends AppCompatActivity {
         
         if (playerWon) {
             // Player won at least one bet
-            tvResultType.setText("🎊 MULTI-BET SUCCESS! 🎊");
+            tvResultType.setText("🎊 BET SUCCESS! 🎊");
             tvResultType.setTextColor(getResources().getColor(R.color.win_green));
-            
-            ivResultIcon.setImageResource(android.R.drawable.star_big_on);
-            ivResultIcon.setColorFilter(getResources().getColor(R.color.accent_yellow));
             
         } else {
             // Player lost all bets
             tvResultType.setText("😔 NO WINNING BETS");
             tvResultType.setTextColor(getResources().getColor(R.color.lose_red));
-            
-            ivResultIcon.setImageResource(android.R.drawable.ic_delete);
-            ivResultIcon.setColorFilter(getResources().getColor(R.color.lose_red));
         }
         
         // Build detailed multi-bet result
@@ -303,6 +298,9 @@ public class ResultActivity extends AppCompatActivity {
         tvBalanceUpdate.setTextColor(newBalance > 0 ? 
             getResources().getColor(R.color.win_green) : 
             getResources().getColor(R.color.warning_orange));
+        
+        // Populate race summary
+        populateRaceSummary();
     }
     
     private void setupClickListeners() {
@@ -323,22 +321,12 @@ public class ResultActivity extends AppCompatActivity {
     }
     
     private void startAnimations() {
-        // Animate result icon
-        ObjectAnimator iconAnimation = ObjectAnimator.ofFloat(ivResultIcon, "scaleX", 0f, 1.2f, 1f);
-        ObjectAnimator iconAnimationY = ObjectAnimator.ofFloat(ivResultIcon, "scaleY", 0f, 1.2f, 1f);
-        iconAnimation.setDuration(1000);
-        iconAnimationY.setDuration(1000);
-        iconAnimation.setInterpolator(new BounceInterpolator());
-        iconAnimationY.setInterpolator(new BounceInterpolator());
-        
         // Animate result text
         ObjectAnimator textAnimation = ObjectAnimator.ofFloat(tvResultType, "alpha", 0f, 1f);
         textAnimation.setDuration(1500);
         textAnimation.setStartDelay(500);
         
         // Start animations
-        iconAnimation.start();
-        iconAnimationY.start();
         textAnimation.start();
         
         // Animate buttons with delay
@@ -399,6 +387,28 @@ public class ResultActivity extends AppCompatActivity {
         super.onResume();
         if (audioManager != null) {
             audioManager.onResume();
+        }
+    }
+    
+    private void populateRaceSummary() {
+        // Set race winner
+        tvRaceWinner.setText(winnerCarName);
+        
+        if (isMultiBet) {
+            // For multi-betting, show count and total instead of all names
+            int carCount = betCarNames.size();
+            tvSelectedCar.setText(carCount + " cars selected");
+            
+            // Show total bet amount
+            int totalBet = 0;
+            for (int amount : betAmounts) {
+                totalBet += amount;
+            }
+            tvBetAmount.setText(totalBet + " coins");
+        } else {
+            // For single betting
+            tvSelectedCar.setText(selectedCarName != null ? selectedCarName : "Unknown");
+            tvBetAmount.setText(betAmount + " coins");
         }
     }
     

@@ -171,9 +171,13 @@ public class MainActivity extends AppCompatActivity {
         try {
             Intent intent = new Intent(this, AchievementsActivity.class);
             startActivity(intent);
+            
+            // Add transition animation
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         } catch (Exception e) {
             ErrorHandler.logError("AchievementsActivity", e);
-            ErrorHandler.showErrorToast(this, "Failed to open achievements");
+            ErrorHandler.showErrorToast(this, "Failed to open achievements: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -253,17 +257,19 @@ public class MainActivity extends AppCompatActivity {
             gameEditor.putInt(KEY_PLAYER_BALANCE, DEFAULT_BALANCE);
             gameEditor.apply();
             
-            // Reset race history preferences  
+            // Reset race history using manager instance
+            RaceHistoryManager historyManager = RaceHistoryManager.getInstance(this);
+            historyManager.clearHistory();
+            
+            // Reset race history preferences as well (double safety)
             SharedPreferences historyPrefs = getSharedPreferences("RaceHistoryPrefs", MODE_PRIVATE);
             SharedPreferences.Editor historyEditor = historyPrefs.edit();
             historyEditor.clear();
             historyEditor.apply();
             
-            // Reset achievement preferences
-            SharedPreferences achievementPrefs = getSharedPreferences("AchievementPrefs", MODE_PRIVATE);
-            SharedPreferences.Editor achievementEditor = achievementPrefs.edit();
-            achievementEditor.clear();
-            achievementEditor.apply();
+            // Reset achievements using manager instance 
+            AchievementManager achievementManager = AchievementManager.getInstance(this);
+            achievementManager.resetAllAchievements();
             
             // Reset audio preferences
             SharedPreferences audioPrefs = getSharedPreferences("GameAudioPrefs", MODE_PRIVATE);
@@ -275,9 +281,9 @@ public class MainActivity extends AppCompatActivity {
             etPlayerName.setText("");
             
             // Show success message
-            android.widget.Toast.makeText(this, "🎆 Game Reset Successfully!\n💰 Coins reset to 1000", android.widget.Toast.LENGTH_LONG).show();
+            android.widget.Toast.makeText(this, "🎆 Game Reset Successfully!\n💰 Coins: 1000\n🏆 Achievements: Reset\n📊 History: Cleared", android.widget.Toast.LENGTH_LONG).show();
             
-            ErrorHandler.logInfo("Game data reset successfully - All preferences cleared, balance set to 1000");
+            ErrorHandler.logInfo("Game data reset successfully - All preferences cleared, achievements reset, history cleared, balance set to 1000");
             
         } catch (Exception e) {
             ErrorHandler.handleStorageError(this, e);

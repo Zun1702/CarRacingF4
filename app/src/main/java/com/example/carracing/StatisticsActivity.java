@@ -13,7 +13,8 @@ public class StatisticsActivity extends AppCompatActivity {
     private TextView tvTotalRaces, tvWinRate, tvTotalBet, tvTotalWinnings, tvCurrentStreak;
     private TextView tvFavoriteCar, tvBestWin, tvWorstLoss, tvAverageWin;
     private RecyclerView rvRaceHistory;
-    private Button btnBack, btnClearHistory;
+    private android.widget.ImageButton btnBack;
+    private Button btnClearHistory;
     
     private RaceHistoryManager raceHistoryManager;
     private GameAudioManager audioManager;
@@ -49,7 +50,7 @@ public class StatisticsActivity extends AppCompatActivity {
         
         // RecyclerView and Buttons
         rvRaceHistory = findViewById(R.id.rvRaceHistory);
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBackToHome);
         btnClearHistory = findViewById(R.id.btnClearHistory);
     }
     

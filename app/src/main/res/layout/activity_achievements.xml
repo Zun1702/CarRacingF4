@@ -6,40 +6,31 @@
     android:background="@color/background_dark"
     android:padding="16dp">
 
-    <!-- Header with Back Button -->
-    <LinearLayout
+    <!-- Circular Back Button -->
+    <ImageButton
+        android:id="@+id/btnBackToHome"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_back_arrow"
+        android:background="@drawable/button_circular_back"
+        android:contentDescription="Back"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="centerInside" />
+
+    <!-- Header Title -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <Button
-            android:id="@+id/btnBackToHome"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="⬅️"
-            android:textSize="20sp"
-            android:background="@drawable/settings_icon_selector"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="🏆 Achievements"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:gravity="center" />
-
-        <!-- Spacer to balance the layout -->
-        <View
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-
-    </LinearLayout>
+        android:text="🏆 Achievements"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
 
     <!-- Achievement Statistics -->
     <androidx.cardview.widget.CardView

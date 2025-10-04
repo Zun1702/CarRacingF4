@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="16dp"
     tools:context=".ResultActivity">
 
@@ -24,16 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Result Icon -->
-    <ImageView
-        android:id="@+id/ivResultIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@android:drawable/star_big_on"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvResultType" />
+
 
     <!-- Winner Announcement -->
     <TextView
@@ -52,7 +48,7 @@
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivResultIcon" />
+        app:layout_constraintTop_toBottomOf="@id/tvResultType" />
 
     <!-- Bet Result -->
     <TextView
@@ -96,9 +92,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/card_background"
-        android:padding="16dp"
+        android:padding="12dp"
         android:elevation="4dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,24 +120,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Your Choice:"
-                android:textSize="14sp"
-                android:textColor="@color/track_gray" />
+                android:textSize="13sp"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/tvSelectedCar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Red Thunder"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
@@ -149,24 +145,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Bet Amount:"
-                android:textSize="14sp"
-                android:textColor="@color/track_gray" />
+                android:textSize="13sp"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/tvBetAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100 coins"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
@@ -180,15 +176,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Race Winner:"
-                android:textSize="14sp"
-                android:textColor="@color/track_gray" />
+                android:textSize="13sp"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/tvRaceWinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Red Thunder"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@color/accent_yellow_dark" />
 
@@ -201,10 +197,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:weightSum="2"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llRaceDetails">
@@ -216,8 +211,7 @@
             android:layout_weight="1"
             android:text="@string/play_again_button"
             style="@style/RacingButton"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible" />
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/btnMainMenu"
@@ -226,9 +220,10 @@
             android:layout_weight="1"
             android:text="@string/main_menu_button"
             style="@style/RacingButtonSecondary"
-            android:layout_marginStart="8dp"
-            android:visibility="invisible" />
+            android:layout_marginStart="8dp" />
 
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

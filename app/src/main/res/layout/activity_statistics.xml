@@ -11,7 +11,20 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header -->
+        <!-- Circular Back Button -->
+        <ImageButton
+            android:id="@+id/btnBackToHome"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_back_arrow"
+            android:background="@drawable/button_circular_back"
+            android:contentDescription="Back"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerInside" />
+
+        <!-- Header Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,17 +268,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- Back Button -->
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="⬅️ Back to Main Menu"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:backgroundTint="@color/accent_yellow"
-            android:textColor="@color/dark_blue"
-            android:layout_marginTop="16dp" />
+
 
     </LinearLayout>
 
