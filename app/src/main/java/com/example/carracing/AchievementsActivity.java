@@ -12,20 +12,26 @@ public class AchievementsActivity extends AppCompatActivity {
     
     private TextView tvAchievementStats, tvNoAchievements;
     private RecyclerView rvAchievements;
-    private android.widget.Button btnBackToHome;
+    private android.widget.ImageButton btnBackToHome;
     private AchievementAdapter achievementAdapter;
     private AchievementManager achievementManager;
     private GameAudioManager audioManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_achievements);
-        
-        initializeViews();
-        setupManagers();
-        loadAchievements();
-        displayStats();
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_achievements);
+            
+            initializeViews();
+            setupManagers();
+            loadAchievements();
+            displayStats();
+        } catch (Exception e) {
+            e.printStackTrace();
+            android.util.Log.e("AchievementsActivity", "Error in onCreate: " + e.getMessage());
+            finish(); // Close activity if there's an error
+        }
     }
     
     private void initializeViews() {

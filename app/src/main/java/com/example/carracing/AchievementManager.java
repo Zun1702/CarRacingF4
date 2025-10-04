@@ -303,6 +303,29 @@ public class AchievementManager {
         }
     }
     
+    // Reset all achievements (for game reset functionality)
+    public void resetAllAchievements() {
+        try {
+            // Reset all achievements to initial state
+            for (Achievement achievement : achievements) {
+                achievement.setCurrentValue(0);
+                achievement.setUnlocked(false);
+                achievement.setUnlockedTimestamp(0);
+            }
+            
+            // Clear achievements from SharedPreferences
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove(KEY_ACHIEVEMENTS);
+            editor.apply();
+            
+            // Save the reset state
+            saveAchievements();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     // Achievement Stats inner class
     public static class AchievementStats {
         private int totalAchievements;

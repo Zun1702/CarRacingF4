@@ -26,7 +26,8 @@ public class BettingActivity extends AppCompatActivity {
     
     private TextView tvPlayerName, tvPlayerBalance, tvPotentialWinnings;
     private RecyclerView rvCars;
-    private Button btnStartRace, btnAddCoins, btnBackToHome, btnClearAllBets;
+    private Button btnStartRace, btnAddCoins, btnClearAllBets;
+    private android.widget.ImageButton btnBackToHome;
     
     private SharedPreferences sharedPreferences;
     private GameAudioManager audioManager;
@@ -49,15 +50,21 @@ public class BettingActivity extends AppCompatActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_betting);
-        
-        initializeViews();
-        setupPreferences();
-        loadPlayerData();
-        setupCarList();
-        setupClickListeners();
-        updateDisplay();
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_betting);
+            
+            initializeViews();
+            setupPreferences();
+            loadPlayerData();
+            setupCarList();
+            setupClickListeners();
+            updateDisplay();
+        } catch (Exception e) {
+            e.printStackTrace();
+            android.util.Log.e("BettingActivity", "Error in onCreate: " + e.getMessage());
+            finish(); // Close activity if there's an error
+        }
     }
     
     private void initializeViews() {
