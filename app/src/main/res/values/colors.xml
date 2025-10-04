@@ -33,6 +33,7 @@
     <color name="button_background">#FF1744</color>
     <color name="button_text">#FFFFFF</color>
     <color name="text_secondary">#AAAAAA</color>
+    <color name="text_light_gray">#CCCCCC</color>
     <color name="win_background">#1B4332</color>
     
     <!-- Status Colors -->

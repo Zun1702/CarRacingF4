@@ -17,10 +17,12 @@ public class GameAudioManager {
     private SharedPreferences preferences;
     private boolean isMusicEnabled = true;
     private boolean isSoundEnabled = true;
+    private float masterVolume = 0.8f;
     
     private static final String PREFS_NAME = "CarRacingPrefs";
     private static final String KEY_MUSIC_ENABLED = "music_enabled";
     private static final String KEY_SOUND_ENABLED = "sound_enabled";
+    private static final String KEY_MASTER_VOLUME = "master_volume";
     
     private GameAudioManager(Context context) {
         this.context = context.getApplicationContext();
@@ -49,13 +51,58 @@ public class GameAudioManager {
     private void loadSettings() {
         isMusicEnabled = preferences.getBoolean(KEY_MUSIC_ENABLED, true);
         isSoundEnabled = preferences.getBoolean(KEY_SOUND_ENABLED, true);
+        masterVolume = preferences.getFloat(KEY_MASTER_VOLUME, 0.8f);
+        isSoundEnabled = preferences.getBoolean(KEY_SOUND_ENABLED, true);
     }
     
     public void saveSettings() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(KEY_MUSIC_ENABLED, isMusicEnabled);
         editor.putBoolean(KEY_SOUND_ENABLED, isSoundEnabled);
+        editor.putFloat(KEY_MASTER_VOLUME, masterVolume);
         editor.apply();
+    }
+    
+    // Pause Menu Settings Methods
+    public void setSoundEffectsEnabled(boolean enabled) {
+        isSoundEnabled = enabled;
+        saveSettings();
+    }
+    
+    public void setBackgroundMusicEnabled(boolean enabled) {
+        isMusicEnabled = enabled;
+        if (enabled) {
+            playBackgroundMusic();
+        } else {
+            stopBackgroundMusic();
+        }
+        saveSettings();
+    }
+    
+    public void setMasterVolume(float volume) {
+        masterVolume = Math.max(0.0f, Math.min(1.0f, volume));
+        
+        // Apply volume to current playing media
+        if (backgroundMusic != null && backgroundMusic.isPlaying()) {
+            backgroundMusic.setVolume(masterVolume, masterVolume);
+        }
+        if (engineSound != null && engineSound.isPlaying()) {
+            engineSound.setVolume(masterVolume, masterVolume);
+        }
+        
+        saveSettings();
+    }
+    
+    public boolean isSoundEffectsEnabled() {
+        return isSoundEnabled;
+    }
+    
+    public boolean isBackgroundMusicEnabled() {
+        return isMusicEnabled;
+    }
+    
+    public float getMasterVolume() {
+        return masterVolume;
     }
     
     // Background Music Methods
@@ -68,7 +115,7 @@ public class GameAudioManager {
                 // In a real project, you would use: MediaPlayer.create(context, R.raw.background_music);
                 backgroundMusic = new MediaPlayer();
                 backgroundMusic.setLooping(true);
-                backgroundMusic.setVolume(0.2f, 0.2f);
+                backgroundMusic.setVolume(masterVolume * 0.2f, masterVolume * 0.2f);
                 
                 // For now, we simulate background music with a continuous low tone
                 // This would be replaced with actual music file

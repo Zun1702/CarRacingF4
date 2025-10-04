@@ -14,13 +14,15 @@ Button: "Vào game".
 
 2. Màn hình đặt cược (BettingActivity)
 
-Hiển thị danh sách 3–5 chiếc xe đua (có thể là hình PNG hoặc icon động chạy ngang màn hình).
+Hiển thị danh sách 5 chiếc xe đua (có thể là hình PNG hoặc icon động chạy ngang màn hình).
 
-Người chơi chọn 1 xe để đặt cược:
+Người chơi có thể chọn 1 hoặc nhiều xe để đặt cược (Multi-Betting):
 
-Checkbox hoặc RadioButton để chọn xe.
+Tap vào xe để mở dialog đặt cược riêng cho từng xe.
 
-Ô nhập số tiền cược (không liên kết ví → chỉ là giả lập điểm).
+Ô nhập số tiền cược cho từng xe (không liên kết ví → chỉ là giả lập điểm).
+
+Hiển thị tổng số tiền cược và potential winnings.
 
 Button: "Bắt đầu đua".
 
@@ -34,6 +36,12 @@ Các xe đặt trên vạch xuất phát.
 
 Khi nhấn "Start", các xe tự động chạy (dùng Handler hoặc CountDownTimer + random speed).
 
+Các xe đã đặt cược được highlight với dấu ★.
+
+Button "Pause" để tạm dừng cuộc đua.
+
+Button "Skip" để bỏ qua animation và xem kết quả ngay lập tức.
+
 Có hiệu ứng âm thanh: tiếng đua xe, còi báo xuất phát.
 
 Camera tĩnh, xe tự động di chuyển về đích.
@@ -42,9 +50,13 @@ Camera tĩnh, xe tự động di chuyển về đích.
 
 Thông báo xe thắng cuộc (ví dụ: "Xe số 2 chiến thắng!").
 
-Nếu người chơi đặt đúng → Hiển thị "Bạn đã thắng cược 🎉".
+Hiển thị chi tiết kết quả multi-betting:
+- Danh sách tất cả các xe đã đặt cược
+- Số tiền đặt cho từng xe
+- Kết quả thắng/thua cho từng cược
+- Tổng số tiền thắng/thua
 
-Nếu sai → Hiển thị "Bạn thua rồi 😢".
+Cập nhật balance mới sau khi tính toán multi-betting.
 
 Button: "Chơi lại" (quay về màn đặt cược).
 

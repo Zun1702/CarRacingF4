@@ -11,7 +11,8 @@ An exciting **Android racing betting game** where players choose their champion 
 
 ### Core Gameplay
 - **🏁 5 Unique Racing Cars**: Each with distinct stats and winning odds
-- **💰 Betting System**: Place bets from 10 to your entire balance
+- **💰 Multi-Betting System**: Bet on multiple cars simultaneously with individual amounts
+- **⏸️ Race Controls**: Pause and skip functionality for better user experience
 - **🎲 Fair Racing Algorithm**: Advanced physics with randomized outcomes
 - **⚡ Real-time Racing**: Watch cars compete with dynamic animations
 - **🔊 Immersive Audio**: ToneGenerator-based sound effects and engine sounds
@@ -20,7 +21,8 @@ An exciting **Android racing betting game** where players choose their champion 
 - **🏆 Achievement System**: 15+ achievements to unlock
 - **📊 Statistics Tracking**: Detailed race history and performance analytics
 - **💎 Coin Management**: Earn/lose coins based on race outcomes
-- **🎯 Multiple Betting Options**: Different risk levels and reward multipliers
+- **🎯 Multi-Betting Strategy**: Bet on multiple cars with individual amounts and odds
+- **🎮 Race Control**: Pause races or skip to results instantly
 - **⚙️ Settings Panel**: Audio controls and game reset functionality
 
 ### User Interface
@@ -28,6 +30,7 @@ An exciting **Android racing betting game** where players choose their champion 
 - **📱 Responsive Layout**: Optimized for various screen sizes
 - **🎨 Smooth Animations**: Car movements, countdown timers, and transitions
 - **🔄 Interactive Elements**: Touch-friendly buttons with visual feedback
+- **⏯️ Race Controls**: Intuitive pause/resume and skip buttons during races
 
 ## 🚀 Installation
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
     
@@ -28,6 +29,14 @@ public class ResultActivity extends AppCompatActivity {
     private int betAmount;
     private int winnings;
     private int newBalance;
+    
+    // Multi-betting support
+    private boolean isMultiBet = false;
+    private List<Integer> betCarIds;
+    private List<String> betCarNames;
+    private List<Integer> betAmounts;
+    private List<Float> betOdds;
+    private int winnerCarId;
     
     private SharedPreferences sharedPreferences;
     private GameAudioManager audioManager;
@@ -59,6 +68,23 @@ public class ResultActivity extends AppCompatActivity {
         betAmount = intent.getIntExtra("bet_amount", 0);
         winnings = intent.getIntExtra("winnings", 0);
         newBalance = intent.getIntExtra("new_balance", 1000);
+        
+        // Get multi-betting data
+        isMultiBet = intent.getBooleanExtra("is_multi_bet", false);
+        if (isMultiBet) {
+            betCarIds = intent.getIntegerArrayListExtra("bet_car_ids");
+            betCarNames = intent.getStringArrayListExtra("bet_car_names");
+            betAmounts = intent.getIntegerArrayListExtra("bet_amounts");
+            winnerCarId = intent.getIntExtra("winner_car_id", -1);
+            
+            float[] oddsArray = intent.getFloatArrayExtra("bet_odds");
+            betOdds = new java.util.ArrayList<>();
+            if (oddsArray != null) {
+                for (float odds : oddsArray) {
+                    betOdds.add(odds);
+                }
+            }
+        }
     }
     
     private void initializeViews() {
@@ -174,6 +200,14 @@ public class ResultActivity extends AppCompatActivity {
     }
     
     private void displayResults() {
+        if (isMultiBet) {
+            displayMultiBetResults();
+        } else {
+            displaySingleBetResults();
+        }
+    }
+    
+    private void displaySingleBetResults() {
         // Display winner
         tvWinnerAnnouncement.setText(String.format(getString(R.string.winner_announcement), winnerCarName));
         
@@ -209,8 +243,66 @@ public class ResultActivity extends AppCompatActivity {
         // Show additional information
         String detailText = "Your bet: " + betAmount + " coins on " + selectedCarName + "\n" +
                            "Race winner: " + winnerCarName;
+    }
+    
+    private void displayMultiBetResults() {
+        // Display winner
+        tvWinnerAnnouncement.setText(String.format("🏆 Winner: %s", winnerCarName));
         
-        // You can add this to a details TextView if you create one in the layout
+        if (playerWon) {
+            // Player won at least one bet
+            tvResultType.setText("🎊 MULTI-BET SUCCESS! 🎊");
+            tvResultType.setTextColor(getResources().getColor(R.color.win_green));
+            
+            ivResultIcon.setImageResource(android.R.drawable.star_big_on);
+            ivResultIcon.setColorFilter(getResources().getColor(R.color.accent_yellow));
+            
+        } else {
+            // Player lost all bets
+            tvResultType.setText("😔 NO WINNING BETS");
+            tvResultType.setTextColor(getResources().getColor(R.color.lose_red));
+            
+            ivResultIcon.setImageResource(android.R.drawable.ic_delete);
+            ivResultIcon.setColorFilter(getResources().getColor(R.color.lose_red));
+        }
+        
+        // Build detailed multi-bet result
+        StringBuilder resultText = new StringBuilder();
+        resultText.append("📊 Multi-Bet Results:\n\n");
+        
+        int totalWinnings = 0;
+        for (int i = 0; i < betCarIds.size(); i++) {
+            String carName = betCarNames.get(i);
+            int betAmount = betAmounts.get(i);
+            float odds = betOdds.get(i);
+            boolean won = betCarIds.get(i) == winnerCarId;
+            
+            if (won) {
+                int winAmount = (int) (betAmount * odds);
+                totalWinnings += winAmount;
+                resultText.append(String.format("✅ %s: %d coins (%.1fx) = +%d\n", 
+                    carName, betAmount, odds, winAmount));
+            } else {
+                resultText.append(String.format("❌ %s: %d coins (%.1fx) = 0\n", 
+                    carName, betAmount, odds));
+            }
+        }
+        
+        resultText.append(String.format("\n💰 Total Bet: %d coins", betAmount));
+        resultText.append(String.format("\n🎯 Total Won: %d coins", totalWinnings));
+        resultText.append(String.format("\n📈 Net Result: %s%d coins", 
+            totalWinnings > betAmount ? "+" : "", totalWinnings - betAmount));
+        
+        tvBetResult.setText(resultText.toString());
+        tvBetResult.setTextColor(playerWon ? 
+            getResources().getColor(R.color.win_green) : 
+            getResources().getColor(R.color.lose_red));
+        
+        // Display balance update
+        tvBalanceUpdate.setText("New Balance: " + newBalance + " coins");
+        tvBalanceUpdate.setTextColor(newBalance > 0 ? 
+            getResources().getColor(R.color.win_green) : 
+            getResources().getColor(R.color.warning_orange));
     }
     
     private void setupClickListeners() {
@@ -318,6 +410,9 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
     
+    // ====== MULTI-BETTING SUPPORT METHODS ======
+    // Methods already defined above, no need to duplicate
+
     @Override
     public void onBackPressed() {
         audioManager.playButtonClick();
