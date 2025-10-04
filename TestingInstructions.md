@@ -46,53 +46,62 @@ cd "d:\Learning\PRM392\CarRacing"
    - ✅ 5 cars visible in RecyclerView
    - ✅ Each car shows: Name, Speed, Odds
 
-2. **Car Selection**
-   - ✅ Tap car → Selection indicator appears
-   - ✅ Card elevation increases for selected car
-   - ✅ Only one car selectable at a time
+2. **Multi-Betting Car Selection**
+   - ✅ Tap car → Individual betting dialog opens
+   - ✅ Card shows betting amount after bet placed
+   - ✅ Multiple cars can have bets simultaneously
+   - ✅ Selected cars show ★ indicator
 
-3. **Betting Logic**
-   - ✅ Enter bet amount (10-1000 range)
-   - ✅ Potential winnings calculate: `bet * odds`
+3. **Multi-Betting Logic**
+   - ✅ Enter bet amount for each car (10-balance range)
+   - ✅ Individual potential winnings calculate: `bet * odds`
+   - ✅ Total betting amount displayed
    - ✅ Validation: Empty bet shows error
-   - ✅ Validation: Insufficient funds shows error
-   - ✅ "START RACE" navigates to RacingActivity
+   - ✅ Validation: Total bets exceed balance shows error
+   - ✅ "START RACE" navigates to RacingActivity with all bets
 
 ### **Test Case 3: RacingActivity Flow**
 1. **Race Setup**
-   - ✅ Race info shows: "Your Bet: X coins on CarName"
+   - ✅ Race info shows multi-betting details
    - ✅ 5 race lanes visible
    - ✅ Cars positioned at start line
    - ✅ Progress bars at 0%
+   - ✅ Pause and Skip buttons visible
 
 2. **Countdown Sequence**
    - ✅ Shows "3" → "2" → "1" → "GO!"
    - ✅ Countdown text animates (scale effect)
    - ✅ Race starts after "GO!"
 
-3. **Race Animation**
+3. **Race Animation & Controls**
    - ✅ Cars move across screen (random speeds)
    - ✅ Progress bars update in real-time
    - ✅ Car positions track correctly
    - ✅ Position display updates: "1. CarName", etc.
-   - ✅ Selected car highlighted with ★
+   - ✅ Multi-bet cars highlighted with ★
+   - ✅ **Pause Button**: Stops race animation, shows "Resume"
+   - ✅ **Skip Button**: Instantly completes race, shows results
    - ✅ Race finishes when car reaches end
 
 4. **Race Completion**
    - ✅ Winner car gets scale animation
    - ✅ Auto-navigate to ResultActivity after 2s
+   - ✅ Skip functionality bypasses animation
 
 ### **Test Case 4: ResultActivity Flow**
-1. **Result Display**
+1. **Multi-Betting Result Display**
    - ✅ Win scenario: "🎉 CONGRATULATIONS! 🎉"
    - ✅ Lose scenario: "😢 BETTER LUCK NEXT TIME"
    - ✅ Winner announcement: "🏆 Winner: CarName"
-   - ✅ Bet result: Win amount or loss amount
+   - ✅ **Detailed betting breakdown**: Shows all cars bet on
+   - ✅ **Individual results**: Win/loss for each car bet
+   - ✅ **Total result**: Combined win/loss amount
 
-2. **Balance Update**
-   - ✅ New balance calculated correctly
-   - ✅ Win: `oldBalance - bet + winnings`  
-   - ✅ Lose: `oldBalance - bet`
+2. **Multi-Betting Balance Update**
+   - ✅ New balance calculated correctly for multiple bets
+   - ✅ Win: `oldBalance - totalBets + totalWinnings`  
+   - ✅ Lose: `oldBalance - totalBets`
+   - ✅ Mixed results: `oldBalance - totalBets + partialWinnings`
    - ✅ Balance saved to SharedPreferences
 
 3. **Navigation Options**

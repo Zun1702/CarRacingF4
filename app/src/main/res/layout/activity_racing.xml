@@ -2,11 +2,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
     android:padding="16dp"
+    android:focusableInTouchMode="true"
     tools:context=".RacingActivity">
+
+    <!-- Pause Button -->
+    <ImageButton
+        android:id="@+id/btnPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_pause"
+        android:background="@drawable/button_circular_background"
+        android:contentDescription="Pause Race"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Race Title -->
     <TextView
@@ -36,6 +52,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvRaceTitle" />
 
+    <!-- Skip Instruction -->
+    <TextView
+        android:id="@+id/tvSkipInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Press SPACE to skip"
+        android:textSize="12sp"
+        android:textColor="@color/text_light_gray"
+        android:alpha="0.7"
+        android:visibility="gone"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRaceInfo" />
+
     <!-- Countdown Text -->
     <TextView
         android:id="@+id/tvCountdown"
@@ -61,7 +92,7 @@
         app:layout_constraintBottom_toTopOf="@id/llPositions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRaceInfo">
+        app:layout_constraintTop_toBottomOf="@id/tvSkipInstruction">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -327,6 +358,135 @@
                 android:textAlignment="center" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Pause Popup Overlay - MUST BE AT THE END FOR PROPER Z-ORDER -->
+    <LinearLayout
+        android:id="@+id/pauseOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay_dark"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Pause Title -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="⏸️ GAME PAUSED"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/accent_yellow"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Audio Settings -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🔊 Sound Effects"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <Switch
+                        android:id="@+id/switchSoundEffects"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🎵 Background Music"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <Switch
+                        android:id="@+id/switchBackgroundMusic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true" />
+
+                </LinearLayout>
+
+                <!-- Pause Menu Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btnResume"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="▶️ RESUME RACE"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:background="@drawable/button_green_background"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/btnRestartRace"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🔄 RESTART RACE"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:background="@drawable/button_orange_background"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/btnExitToMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🏠 EXIT TO MENU"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:background="@drawable/button_red_background" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

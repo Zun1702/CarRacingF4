@@ -20,6 +20,10 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     private OnCarClickListener listener;
     private int selectedPosition = -1;
     
+    // Multi-betting support
+    private boolean isMultiBettingMode = false;
+    private List<Integer> multiBetCarIds = new java.util.ArrayList<>();
+    
     public interface OnCarClickListener {
         void onCarClick(int carId);
     }
@@ -44,14 +48,40 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         holder.tvCarStats.setText("Speed: " + car.getBaseSpeed() + " | Odds: " + car.getOdds() + "x");
         holder.ivCarImage.setImageResource(car.getDrawableResource());
         
-        // Highlight selected car with animation
-        if (position == selectedPosition) {
+        // Handle selection based on mode
+        boolean isSelected = isMultiBettingMode ? 
+            multiBetCarIds.contains(car.getId()) : 
+            position == selectedPosition;
+            
+        if (isSelected) {
             holder.vSelectionIndicator.setVisibility(View.VISIBLE);
             holder.cardView.setCardElevation(12f);
+            
+            // Show different indicators for multi-betting
+            if (isMultiBettingMode) {
+                holder.vSelectionIndicator.setBackgroundColor(
+                    holder.itemView.getContext().getResources().getColor(R.color.accent_yellow));
+                // Show bet amount if available
+                int betIndex = multiBetCarIds.indexOf(car.getId());
+                if (betIndex != -1 && holder.tvBetAmount != null) {
+                    holder.tvBetAmount.setVisibility(View.VISIBLE);
+                    holder.tvBetAmount.setText("💰 Bet placed!");
+                }
+            } else {
+                holder.vSelectionIndicator.setBackgroundColor(
+                    holder.itemView.getContext().getResources().getColor(R.color.win_green));
+                if (holder.tvBetAmount != null) {
+                    holder.tvBetAmount.setVisibility(View.GONE);
+                }
+            }
+            
             animateCarSelection(holder, true);
         } else {
             holder.vSelectionIndicator.setVisibility(View.INVISIBLE);
             holder.cardView.setCardElevation(6f);
+            if (holder.tvBetAmount != null) {
+                holder.tvBetAmount.setVisibility(View.GONE);
+            }
             animateCarSelection(holder, false);
         }
         
@@ -95,6 +125,22 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         if (position != -1) {
             notifyItemChanged(position);
         }
+    }
+    
+    public void setMultiBettingMode(boolean isMultiBettingMode) {
+        this.isMultiBettingMode = isMultiBettingMode;
+        // Clear selection when switching modes
+        if (isMultiBettingMode) {
+            selectedPosition = -1;
+        } else {
+            multiBetCarIds.clear();
+        }
+        notifyDataSetChanged();
+    }
+    
+    public void setMultiBetData(List<Integer> multiBetCarIds) {
+        this.multiBetCarIds = new java.util.ArrayList<>(multiBetCarIds);
+        notifyDataSetChanged();
     }
     
     private void animateCarSelection(CarViewHolder holder, boolean isSelected) {
@@ -141,6 +187,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         ImageView ivCarImage;
         TextView tvCarName;
         TextView tvCarStats;
+        TextView tvBetAmount;
         View vSelectionIndicator;
         
         public CarViewHolder(@NonNull View itemView) {
@@ -149,6 +196,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             ivCarImage = itemView.findViewById(R.id.ivCarImage);
             tvCarName = itemView.findViewById(R.id.tvCarName);
             tvCarStats = itemView.findViewById(R.id.tvCarStats);
+            tvBetAmount = itemView.findViewById(R.id.tvBetAmount);
             vSelectionIndicator = itemView.findViewById(R.id.vSelectionIndicator);
         }
     }

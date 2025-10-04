@@ -5,11 +5,17 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,10 +25,16 @@ import java.util.Random;
 
 public class RacingActivity extends AppCompatActivity {
     
-    private TextView tvRaceTitle, tvCountdown, tvRaceInfo;
+    private TextView tvRaceTitle, tvCountdown, tvRaceInfo, tvSkipInstruction;
     private ImageView[] carImageViews;
     private ProgressBar[] progressBars;
     private TextView[] positionTexts;
+    
+    // Pause functionality
+    private ImageButton btnPause;
+    private LinearLayout pauseOverlay;
+    private Button btnResume, btnRestartRace, btnExitToMenu;
+    private Switch switchSoundEffects, switchBackgroundMusic;
     
     private String playerName;
     private int playerBalance;
@@ -31,6 +43,13 @@ public class RacingActivity extends AppCompatActivity {
     private String selectedCarName;
     private float selectedCarOdds;
     
+    // Multi-betting support
+    private boolean isMultiBet = false;
+    private List<Integer> betCarIds;
+    private List<String> betCarNames;
+    private List<Integer> betAmounts;
+    private List<Float> betOdds;
+    
     private List<Car> racingCars;
     private Handler raceHandler;
     private Runnable raceRunnable;
@@ -38,6 +57,9 @@ public class RacingActivity extends AppCompatActivity {
     private GameAudioManager audioManager;
     
     private boolean raceFinished = false;
+    private boolean raceSkipped = false;
+    private boolean raceStarted = false;
+    private boolean racePaused = false;
     private int winnerCarId = -1;
     private final int RACE_DISTANCE = 1000; // pixels
     private final int RACE_UPDATE_INTERVAL = 30; // milliseconds - faster updates for 30s race
@@ -59,17 +81,44 @@ public class RacingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         playerName = intent.getStringExtra("player_name");
         playerBalance = intent.getIntExtra("player_balance", 1000);
-        betAmount = intent.getIntExtra("bet_amount", 0);
-        selectedCarId = intent.getIntExtra("selected_car_id", 0);
-        selectedCarName = intent.getStringExtra("selected_car_name");
-        selectedCarOdds = intent.getFloatExtra("selected_car_odds", 2.0f);
+        isMultiBet = intent.getBooleanExtra("is_multi_bet", false);
+        
+        if (isMultiBet) {
+            // Get multi-bet data
+            betCarIds = intent.getIntegerArrayListExtra("bet_car_ids");
+            betCarNames = intent.getStringArrayListExtra("bet_car_names");
+            betAmounts = intent.getIntegerArrayListExtra("bet_amounts");
+            float[] oddsArray = intent.getFloatArrayExtra("bet_odds");
+            betOdds = new ArrayList<>();
+            if (oddsArray != null) {
+                for (float odds : oddsArray) {
+                    betOdds.add(odds);
+                }
+            }
+        } else {
+            // Single bet data
+            betAmount = intent.getIntExtra("bet_amount", 0);
+            selectedCarId = intent.getIntExtra("selected_car_id", 0);
+            selectedCarName = intent.getStringExtra("selected_car_name");
+            selectedCarOdds = intent.getFloatExtra("selected_car_odds", 2.0f);
+        }
     }
     
     private void initializeViews() {
         tvRaceTitle = findViewById(R.id.tvRaceTitle);
         tvCountdown = findViewById(R.id.tvCountdown);
         tvRaceInfo = findViewById(R.id.tvRaceInfo);
+        tvSkipInstruction = findViewById(R.id.tvSkipInstruction);
         
+        // Pause elements
+        btnPause = findViewById(R.id.btnPause);
+        pauseOverlay = findViewById(R.id.pauseOverlay);
+        btnResume = findViewById(R.id.btnResume);
+        btnRestartRace = findViewById(R.id.btnRestartRace);
+        btnExitToMenu = findViewById(R.id.btnExitToMenu);
+        switchSoundEffects = findViewById(R.id.switchSoundEffects);
+        switchBackgroundMusic = findViewById(R.id.switchBackgroundMusic);
+
         // Initialize car ImageViews
         carImageViews = new ImageView[5];
         carImageViews[0] = findViewById(R.id.ivCar1);
@@ -95,11 +144,332 @@ public class RacingActivity extends AppCompatActivity {
         positionTexts[4] = findViewById(R.id.tvPosition5);
         
         // Setup race info
-        tvRaceInfo.setText("Your Bet: " + betAmount + " coins on " + selectedCarName);
+        if (isMultiBet) {
+            int totalBets = 0;
+            for (int amount : betAmounts) {
+                totalBets += amount;
+            }
+            tvRaceInfo.setText("Multi-Bet: " + totalBets + " coins on " + betCarIds.size() + " cars");
+        } else {
+            tvRaceInfo.setText("Your Bet: " + betAmount + " coins on " + selectedCarName);
+        }
         
         random = new Random();
         raceHandler = new Handler();
         audioManager = GameAudioManager.getInstance(this);
+        
+        // Setup key listener for skip functionality
+        setupSkipKeyListener();
+        
+        // Setup pause functionality
+        setupPauseListeners();
+    }
+    
+    private void setupSkipKeyListener() {
+        // Make the main layout focusable to receive key events
+        View mainLayout = findViewById(R.id.main_layout);
+        if (mainLayout != null) {
+            mainLayout.setFocusableInTouchMode(true);
+            mainLayout.requestFocus();
+            mainLayout.setOnKeyListener((v, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_SPACE && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (raceStarted && !raceFinished && !raceSkipped) {
+                        skipRace();
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+    }
+    
+    private void skipRace() {
+        if (raceSkipped || raceFinished) return;
+        
+        raceSkipped = true;
+        audioManager.playButtonClick();
+        
+        // Hide skip instruction
+        tvSkipInstruction.setVisibility(View.GONE);
+        
+        // Stop current race handler
+        if (raceHandler != null && raceRunnable != null) {
+            raceHandler.removeCallbacks(raceRunnable);
+        }
+        
+        // Show skip animation
+        showSkipAnimation();
+        
+        // Determine random winner and finish race quickly
+        finishRaceQuickly();
+    }
+    
+    private void showSkipAnimation() {
+        // Create a fast-forward effect
+        tvRaceInfo.setText("⏩ SKIPPING RACE...");
+        
+        // First determine the winner before animation
+        winnerCarId = random.nextInt(racingCars.size());
+        
+        // Animate cars with different speeds - winner first, others follow
+        for (int i = 0; i < carImageViews.length; i++) {
+            ImageView carView = carImageViews[i];
+            ProgressBar progressBar = progressBars[i];
+            
+            boolean isWinner = (i == winnerCarId);
+            
+            // Winner gets fastest animation, others slower with delays
+            int animationDuration;
+            int animationDelay;
+            float finalPosition;
+            int finalProgress;
+            
+            if (isWinner) {
+                // Winner: Fast to finish line
+                animationDuration = 600;
+                animationDelay = 0;
+                finalPosition = getResources().getDisplayMetrics().widthPixels * 0.6f;
+                finalProgress = RACE_DISTANCE;
+            } else {
+                // Others: Slower and don't reach finish line
+                animationDuration = 800 + random.nextInt(300); // 800-1100ms
+                animationDelay = 100 + random.nextInt(200); // 100-300ms delay
+                finalPosition = getResources().getDisplayMetrics().widthPixels * (0.45f + random.nextFloat() * 0.1f); // 45-55%
+                finalProgress = RACE_DISTANCE - 50 - random.nextInt(150); // Don't reach finish
+            }
+            
+            // Car movement animation
+            ObjectAnimator carAnimation = ObjectAnimator.ofFloat(carView, "translationX", 
+                carView.getTranslationX(), finalPosition);
+            carAnimation.setDuration(animationDuration);
+            carAnimation.setStartDelay(animationDelay);
+            carAnimation.setInterpolator(new AccelerateInterpolator());
+            carAnimation.start();
+            
+            // Progress bar animation
+            ObjectAnimator progressAnimation = ObjectAnimator.ofInt(progressBar, "progress", 
+                progressBar.getProgress(), finalProgress);
+            progressAnimation.setDuration(animationDuration);
+            progressAnimation.setStartDelay(animationDelay);
+            progressAnimation.setInterpolator(new AccelerateInterpolator());
+            progressAnimation.start();
+            
+            // Add winner visual effect
+            if (isWinner) {
+                // Winner gets special animation after reaching finish
+                ObjectAnimator winnerEffect = ObjectAnimator.ofFloat(carView, "scaleY", 1.0f, 1.2f, 1.0f);
+                winnerEffect.setDuration(400);
+                winnerEffect.setStartDelay(animationDuration + 100);
+                winnerEffect.setRepeatCount(1);
+                winnerEffect.start();
+                
+                // Show winner immediately in race info
+                carAnimation.addListener(new android.animation.AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(android.animation.Animator animation) {
+                        tvRaceInfo.setText("🏆 " + racingCars.get(winnerCarId).getName() + " WINS!");
+                    }
+                });
+            }
+        }
+    }
+    
+    private void finishRaceQuickly() {
+        // Winner already determined in showSkipAnimation()
+        raceFinished = true;
+        
+        // Stop engine sounds
+        audioManager.stopEngineSound();
+        
+        // Update final positions to match animation
+        for (int i = 0; i < racingCars.size(); i++) {
+            if (i == winnerCarId) {
+                // Winner finishes the race
+                racingCars.get(i).setCurrentPosition(RACE_DISTANCE);
+            } else {
+                // Others don't reach finish line
+                racingCars.get(i).setCurrentPosition(RACE_DISTANCE - 50 - random.nextInt(150));
+            }
+        }
+        
+        updatePositions();
+        
+        // Show result after winner finishes (winner animation takes ~600ms + delay)
+        raceHandler.postDelayed(this::showResult, 1200);
+    }
+    
+    private void setupPauseListeners() {
+        // Pause button click
+        btnPause.setOnClickListener(v -> {
+            if (raceStarted && !raceFinished && !raceSkipped) {
+                pauseRace();
+            }
+        });
+        
+        // Resume button
+        btnResume.setOnClickListener(v -> {
+            audioManager.playButtonClick();
+            resumeRace();
+        });
+        
+        // Restart race button
+        btnRestartRace.setOnClickListener(v -> {
+            audioManager.playButtonClick();
+            showRestartConfirmation();
+        });
+        
+        // Exit to menu button
+        btnExitToMenu.setOnClickListener(v -> {
+            audioManager.playButtonClick();
+            showExitConfirmation();
+        });
+        
+        // Sound effects switch
+        switchSoundEffects.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            audioManager.setSoundEffectsEnabled(isChecked);
+            if (isChecked) audioManager.playButtonClick();
+        });
+        
+        // Background music switch
+        switchBackgroundMusic.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            audioManager.setBackgroundMusicEnabled(isChecked);
+            if (isChecked) audioManager.playButtonClick();
+        });
+        
+        // Initialize settings from audio manager
+        initializePauseSettings();
+    }
+    
+    private void initializePauseSettings() {
+        // Load current audio settings
+        switchSoundEffects.setChecked(audioManager.isSoundEffectsEnabled());
+        switchBackgroundMusic.setChecked(audioManager.isBackgroundMusicEnabled());
+    }
+    
+    private void pauseRace() {
+        if (racePaused) return;
+        
+        racePaused = true;
+        audioManager.playButtonClick();
+        
+        // Pause race handler
+        if (raceHandler != null && raceRunnable != null) {
+            raceHandler.removeCallbacks(raceRunnable);
+        }
+        
+        // Pause audio
+        audioManager.onPause();
+        
+        // Show pause overlay with animation
+        pauseOverlay.setVisibility(View.VISIBLE);
+        pauseOverlay.setAlpha(0f);
+        pauseOverlay.animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start();
+            
+        // Update race info
+        tvRaceInfo.setText("⏸️ RACE PAUSED");
+    }
+    
+    private void resumeRace() {
+        if (!racePaused) return;
+        
+        racePaused = false;
+        
+        // Hide pause overlay with animation
+        pauseOverlay.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .withEndAction(() -> pauseOverlay.setVisibility(View.GONE))
+            .start();
+            
+        // Resume audio
+        audioManager.onResume();
+        
+        // Resume race handler
+        if (raceHandler != null && raceRunnable != null && !raceFinished && !raceSkipped) {
+            raceHandler.post(raceRunnable);
+        }
+        
+        // Update race info back to normal
+        updateRaceInfoForResume();
+    }
+    
+    private void updateRaceInfoForResume() {
+        double raceProgress = getRaceProgress();
+        if (raceProgress < 0.3) {
+            tvRaceInfo.setText("🏁 Race in progress...");
+        } else if (raceProgress < 0.7) {
+            tvRaceInfo.setText("🔥 Intense competition!");
+        } else {
+            tvRaceInfo.setText("🏁 FINAL STRETCH!");
+        }
+    }
+    
+    private void showRestartConfirmation() {
+        new android.app.AlertDialog.Builder(this)
+            .setTitle("🔄 Restart Race")
+            .setMessage("Are you sure you want to restart the race? Your current progress will be lost.")
+            .setPositiveButton("Restart", (dialog, which) -> {
+                restartRace();
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
+    }
+    
+    private void showExitConfirmation() {
+        new android.app.AlertDialog.Builder(this)
+            .setTitle("🏠 Exit to Menu")
+            .setMessage("Are you sure you want to exit? Your bet will be lost.")
+            .setPositiveButton("Exit", (dialog, which) -> {
+                exitToMenu();
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
+    }
+    
+    private void restartRace() {
+        // Reset all race state
+        raceFinished = false;
+        raceSkipped = false;
+        raceStarted = false;
+        racePaused = false;
+        winnerCarId = -1;
+        
+        // Hide pause overlay
+        pauseOverlay.setVisibility(View.GONE);
+        
+        // Reset car positions
+        for (Car car : racingCars) {
+            car.setCurrentPosition(0);
+        }
+        
+        // Reset UI
+        for (int i = 0; i < carImageViews.length; i++) {
+            carImageViews[i].setTranslationX(0);
+            progressBars[i].setProgress(0);
+        }
+        
+        btnPause.setVisibility(View.GONE);
+        tvSkipInstruction.setVisibility(View.GONE);
+        
+        // Start countdown again
+        startRaceCountdown();
+    }
+    
+    private void exitToMenu() {
+        // Stop all handlers and audio
+        if (raceHandler != null && raceRunnable != null) {
+            raceHandler.removeCallbacks(raceRunnable);
+        }
+        audioManager.stopEngineSound();
+        
+        // Return to MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
     
     private void setupRacingCars() {
@@ -166,6 +536,12 @@ public class RacingActivity extends AppCompatActivity {
     }
     
     private void startRace() {
+        raceStarted = true;
+        
+        // Show skip instruction and pause button
+        tvSkipInstruction.setVisibility(View.VISIBLE);
+        btnPause.setVisibility(View.VISIBLE);
+        
         // Reset car positions
         for (Car car : racingCars) {
             car.setCurrentPosition(0);
@@ -189,7 +565,7 @@ public class RacingActivity extends AppCompatActivity {
         raceRunnable = new Runnable() {
             @Override
             public void run() {
-                if (!raceFinished) {
+                if (!raceFinished && !raceSkipped && !racePaused) {
                     updateRaceProgress();
                     raceHandler.postDelayed(this, RACE_UPDATE_INTERVAL);
                 }
@@ -435,6 +811,10 @@ public class RacingActivity extends AppCompatActivity {
     private void finishRace() {
         raceHandler.removeCallbacks(raceRunnable);
         
+        // Hide skip instruction and pause button
+        tvSkipInstruction.setVisibility(View.GONE);
+        btnPause.setVisibility(View.GONE);
+        
         // Stop engine sounds
         audioManager.stopEngineSound();
         
@@ -460,6 +840,15 @@ public class RacingActivity extends AppCompatActivity {
     
     private void showResult() {
         Car winnerCar = racingCars.get(winnerCarId);
+        
+        if (isMultiBet) {
+            showMultiBetResult(winnerCar);
+        } else {
+            showSingleBetResult(winnerCar);
+        }
+    }
+    
+    private void showSingleBetResult(Car winnerCar) {
         boolean playerWon = (winnerCarId == selectedCarId);
         
         int winnings = 0;
@@ -480,6 +869,52 @@ public class RacingActivity extends AppCompatActivity {
         intent.putExtra("winnings", winnings);
         intent.putExtra("new_balance", newBalance);
         intent.putExtra("selected_car_name", selectedCarName);
+        
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        finish();
+    }
+    
+    private void showMultiBetResult(Car winnerCar) {
+        int totalBets = 0;
+        int totalWinnings = 0;
+        boolean hasWinningBet = false;
+        
+        // Calculate results for each bet
+        for (int i = 0; i < betCarIds.size(); i++) {
+            int carId = betCarIds.get(i);
+            int betAmount = betAmounts.get(i);
+            float odds = betOdds.get(i);
+            totalBets += betAmount;
+            
+            if (carId == winnerCarId) {
+                totalWinnings += (int) (betAmount * odds);
+                hasWinningBet = true;
+            }
+        }
+        
+        int newBalance = playerBalance - totalBets + totalWinnings;
+        
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("player_name", playerName);
+        intent.putExtra("winner_car_name", winnerCar.getName());
+        intent.putExtra("is_multi_bet", true);
+        intent.putExtra("player_won", hasWinningBet);
+        intent.putExtra("bet_amount", totalBets);
+        intent.putExtra("winnings", totalWinnings);
+        intent.putExtra("new_balance", newBalance);
+        
+        // Pass multi-bet details
+        intent.putIntegerArrayListExtra("bet_car_ids", (ArrayList<Integer>) betCarIds);
+        intent.putStringArrayListExtra("bet_car_names", (ArrayList<String>) betCarNames);
+        intent.putIntegerArrayListExtra("bet_amounts", (ArrayList<Integer>) betAmounts);
+        
+        float[] oddsArray = new float[betOdds.size()];
+        for (int i = 0; i < betOdds.size(); i++) {
+            oddsArray[i] = betOdds.get(i);
+        }
+        intent.putExtra("bet_odds", oddsArray);
+        intent.putExtra("winner_car_id", winnerCarId);
         
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -611,9 +1046,14 @@ public class RacingActivity extends AppCompatActivity {
     
     @Override
     public void onBackPressed() {
-        // Prevent going back during race
-        if (raceFinished) {
-            super.onBackPressed();
+        // Handle back press based on current state
+        if (racePaused) {
+            resumeRace(); // Resume if paused
+        } else if (raceStarted && !raceFinished && !raceSkipped) {
+            pauseRace(); // Pause if racing
+        } else if (raceFinished || !raceStarted) {
+            super.onBackPressed(); // Allow back if race finished or not started
         }
+        // Otherwise prevent going back during active race
     }
 }

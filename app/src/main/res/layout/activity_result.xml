@@ -27,10 +27,10 @@
     <!-- Result Icon -->
     <ImageView
         android:id="@+id/ivResultIcon"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@android:drawable/star_big_on"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvResultType" />
@@ -45,7 +45,7 @@
         android:textStyle="bold"
         android:textColor="@color/accent_yellow"
         android:textAlignment="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginHorizontal="16dp"
         android:background="@drawable/card_background"
         android:padding="16dp"

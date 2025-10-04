@@ -47,6 +47,9 @@
   - [x] Hiển thị potential winnings
   - [x] Save betting info vào SharedPreferences
   - [x] Thêm confirmation dialog
+  - [x] **Multi-Betting System**: Bet on multiple cars simultaneously
+  - [x] Individual bet dialogs for each car
+  - [x] Total betting amount calculation
 
 ### 🎯 PHASE 4: RACING SCREEN (RacingActivity)
 - [x] **UI Components**
@@ -55,6 +58,8 @@
   - [x] Tạo car animations với ObjectAnimator
   - [x] Thiết kế progress indicators
   - [x] Thêm speedometer và race info panel
+  - [x] **Race Control Buttons**: Pause and Skip functionality
+  - [x] Multi-bet cars highlighted with ★ indicator
 
 - [x] **Racing Logic**
   - [x] Implement Car racing algorithm với Handler
@@ -83,6 +88,8 @@
   - [x] Save race history
   - [x] Generate race statistics
   - [x] Achievement system
+  - [x] **Multi-Betting Results**: Detailed breakdown of all bets
+  - [x] Individual win/loss calculation for each car bet
 
 ### 🎯 PHASE 6: ENHANCED FEATURES
 
