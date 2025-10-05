@@ -20,9 +20,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.carracing.utils.CarAnimationUtils;
+import com.example.carracing.utils.SoundManager;
 
 public class MainActivity extends AppCompatActivity {
     
+    private SoundManager soundManager;
     private EditText etPlayerName;
     private Button btnStartGame, btnViewHistory, btnViewAchievements;
     private ImageView ivCarDemo1, ivCarDemo2, ivCarDemo3;
@@ -46,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        
+        // Initialize Sound Manager and start background music
+        soundManager = SoundManager.getInstance(this);
+        soundManager.playBackgroundMusic();
         
         initializeViews();
         setupPreferences();
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     
     private void setupClickListeners() {
         btnStartGame.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
             
             String playerName = etPlayerName.getText().toString().trim();
             
@@ -113,12 +119,12 @@ public class MainActivity extends AppCompatActivity {
         });
         
         btnViewHistory.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
             startHistoryActivity();
         });
         
         btnViewAchievements.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK);
             startAchievementsActivity();
         });
         
@@ -311,10 +317,14 @@ public class MainActivity extends AppCompatActivity {
         // Restart animations when coming back to this activity
         startCarAnimations();
         
-        // Resume audio
+        // Resume background music with new SoundManager
+        if (soundManager != null) {
+            soundManager.playBackgroundMusic();
+        }
+        
+        // Resume old audio manager
         if (audioManager != null) {
             audioManager.onResume();
-            audioManager.playBackgroundMusic();
         }
     }
     
@@ -322,7 +332,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         
-        // Pause audio
+        // Don't stop background music on pause - let it continue
+        // Background music will be stopped when entering racing activity
+        
+        // Pause old audio manager
         if (audioManager != null) {
             audioManager.onPause();
         }
@@ -360,6 +373,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         
         // Release audio resources
+        if (soundManager != null) {
+            soundManager.stopBackgroundMusic();
+        }
         if (audioManager != null) {
             audioManager.onDestroy();
         }

@@ -22,6 +22,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carracing.utils.CarAnimationUtils;
+import com.example.carracing.utils.SoundManager;
+import com.example.carracing.utils.SoundManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.Random;
 
 public class RacingActivity extends AppCompatActivity {
     
+    private SoundManager soundManager;
     private TextView tvRaceTitle, tvCountdown, tvRaceInfo, tvSkipInstruction;
     private ImageView[] carImageViews;
     private ImageView[] smokeImageViews; // For exhaust smoke effects
@@ -86,6 +89,16 @@ public class RacingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_racing);
+        
+        // Initialize Sound Manager
+        soundManager = SoundManager.getInstance(this);
+        
+        // Debug: Check if sound is enabled
+        android.util.Log.d("RacingActivity", "SoundManager initialized. Music enabled: " + soundManager.isMusicEnabled());
+        
+        // Start racing music
+        soundManager.playRacingMusic();
+        android.util.Log.d("RacingActivity", "Racing music started");
         
         getIntentData();
         initializeViews();
@@ -180,7 +193,7 @@ public class RacingActivity extends AppCompatActivity {
         
         random = new Random();
         raceHandler = new Handler();
-        audioManager = GameAudioManager.getInstance(this);
+        // audioManager = GameAudioManager.getInstance(this); // DISABLED - using SoundManager instead
         
         // Setup key listener for skip functionality
         setupSkipKeyListener();
@@ -211,7 +224,7 @@ public class RacingActivity extends AppCompatActivity {
         if (raceSkipped || raceFinished) return;
         
         raceSkipped = true;
-        audioManager.playButtonClick();
+        soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Button click sound
         
         // Hide skip instruction
         tvSkipInstruction.setVisibility(View.GONE);
@@ -302,8 +315,8 @@ public class RacingActivity extends AppCompatActivity {
         // Winner already determined in showSkipAnimation()
         raceFinished = true;
         
-        // Stop engine sounds
-        audioManager.stopEngineSound();
+        // Stop engine sounds (DISABLED - using SoundManager)
+        // // audioManager.stopEngineSound(); // DISABLED
         
         // Update final positions to match animation
         for (int i = 0; i < racingCars.size(); i++) {
@@ -332,32 +345,32 @@ public class RacingActivity extends AppCompatActivity {
         
         // Resume button
         btnResume.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Button click
             resumeRace();
         });
         
         // Restart race button
         btnRestartRace.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Button click
             showRestartConfirmation();
         });
         
         // Exit to menu button
         btnExitToMenu.setOnClickListener(v -> {
-            audioManager.playButtonClick();
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Button click
             showExitConfirmation();
         });
         
         // Sound effects switch
         switchSoundEffects.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            audioManager.setSoundEffectsEnabled(isChecked);
-            if (isChecked) audioManager.playButtonClick();
+            soundManager.setSoundEnabled(isChecked); // Control sound effects
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Switch click sound
         });
         
         // Background music switch
         switchBackgroundMusic.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            audioManager.setBackgroundMusicEnabled(isChecked);
-            if (isChecked) audioManager.playButtonClick();
+            soundManager.setMusicEnabled(isChecked); // Control background music
+            soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Switch click sound
         });
         
         // Initialize settings from audio manager
@@ -366,15 +379,15 @@ public class RacingActivity extends AppCompatActivity {
     
     private void initializePauseSettings() {
         // Load current audio settings
-        switchSoundEffects.setChecked(audioManager.isSoundEffectsEnabled());
-        switchBackgroundMusic.setChecked(audioManager.isBackgroundMusicEnabled());
+        // switchSoundEffects.setChecked(audioManager.isSoundEffectsEnabled()); // DISABLED
+        // switchBackgroundMusic.setChecked(audioManager.isBackgroundMusicEnabled()); // DISABLED
     }
     
     private void pauseRace() {
         if (racePaused) return;
         
         racePaused = true;
-        audioManager.playButtonClick();
+        soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Pause button click
         
         // Pause race handler
         if (raceHandler != null && raceRunnable != null) {
@@ -382,7 +395,7 @@ public class RacingActivity extends AppCompatActivity {
         }
         
         // Pause audio
-        audioManager.onPause();
+        // audioManager.onPause(); // DISABLED
         
         // Show pause overlay with animation
         pauseOverlay.setVisibility(View.VISIBLE);
@@ -409,7 +422,7 @@ public class RacingActivity extends AppCompatActivity {
             .start();
             
         // Resume audio
-        audioManager.onResume();
+        // audioManager.onResume(); // DISABLED
         
         // Resume race handler
         if (raceHandler != null && raceRunnable != null && !raceFinished && !raceSkipped) {
@@ -487,7 +500,7 @@ public class RacingActivity extends AppCompatActivity {
         if (raceHandler != null && raceRunnable != null) {
             raceHandler.removeCallbacks(raceRunnable);
         }
-        audioManager.stopEngineSound();
+        // audioManager.stopEngineSound(); // DISABLED
         
         // Return to MainActivity
         Intent intent = new Intent(this, MainActivity.class);
@@ -546,13 +559,19 @@ public class RacingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (countdown[0] > 0) {
-                    audioManager.playCountdown();
+                    // Play countdown beep sound
+                    soundManager.playSound(SoundManager.SOUND_BUTTON_CLICK); // Use as countdown beep
+                    android.util.Log.d("RacingActivity", "Countdown: " + countdown[0]);
+                    
                     tvCountdown.setText(String.valueOf(countdown[0]));
                     animateCountdown();
                     countdown[0]--;
                     countdownHandler.postDelayed(this, 1000);
                 } else {
-                    audioManager.playRaceStart();
+                    // Play race start sound
+                    soundManager.playSound(SoundManager.SOUND_RACE_START);
+                    android.util.Log.d("RacingActivity", "Race started!");
+                    
                     tvCountdown.setText("GO!");
                     animateCountdown();
                     countdownHandler.postDelayed(() -> {
@@ -599,8 +618,11 @@ public class RacingActivity extends AppCompatActivity {
         // Randomize car conditions for each race
         randomizeCarConditions();
         
-        // Start engine sounds
-        audioManager.playEngineSound();
+        // Start engine sounds for all cars
+        soundManager.playSound(SoundManager.SOUND_RACE_START);
+        for (int i = 0; i < 5; i++) {
+            soundManager.startEngineSound(i, 50); // Base RPM
+        }
         
         raceRunnable = new Runnable() {
             @Override
@@ -701,12 +723,24 @@ public class RacingActivity extends AppCompatActivity {
         float translationX = progress * maxTranslation;
         carView.setTranslationX(translationX);
         
-        // Move smoke with car (find car index and move corresponding smoke)
+        // Find car index for sound and smoke effects
+        int carIndex = -1;
         for (int i = 0; i < carImageViews.length; i++) {
-            if (carImageViews[i] == carView && smokeImageViews[i] != null) {
-                // Smoke should be slightly behind the bigger car
-                smokeImageViews[i].setTranslationX(translationX - 30);
+            if (carImageViews[i] == carView) {
+                carIndex = i;
                 break;
+            }
+        }
+        
+        if (carIndex != -1) {
+            // Update engine sound based on speed
+            float speed = Math.min(100, progress * 100); // Speed 0-100 based on progress
+            soundManager.updateEngineSound(carIndex, speed);
+            
+            // Move smoke with car
+            if (smokeImageViews[carIndex] != null) {
+                // Smoke should be slightly behind the bigger car
+                smokeImageViews[carIndex].setTranslationX(translationX - 30);
             }
         }
     }
@@ -733,6 +767,9 @@ public class RacingActivity extends AppCompatActivity {
     }
     
     private void animateCollisionEffect(ImageView carView) {
+        // Play collision sound
+        soundManager.playSound(SoundManager.SOUND_CAR_CRASH);
+        
         // Create a quick shake animation to show collision
         ObjectAnimator shake = ObjectAnimator.ofFloat(carView, "translationY", 0f, -10f, 10f, -5f, 5f, 0f);
         shake.setDuration(300);
@@ -746,7 +783,7 @@ public class RacingActivity extends AppCompatActivity {
     
     private void playCrashSound() {
         // Play crash sound through audio manager
-        audioManager.playCrashSound();
+        // audioManager.playCrashSound(); // DISABLED
     }
     
     private void updatePositions() {
@@ -864,11 +901,11 @@ public class RacingActivity extends AppCompatActivity {
         tvSkipInstruction.setVisibility(View.GONE);
         btnPause.setVisibility(View.GONE);
         
-        // Stop engine sounds
-        audioManager.stopEngineSound();
+        // Stop all engine sounds
+        soundManager.stopAllEngineSounds();
         
-        // Play audience cheering
-        audioManager.playAudienceCheering();
+        // Play race finish sound
+        soundManager.playSound(SoundManager.SOUND_RACE_FINISH);
         
         // Add finishing animation
         ObjectAnimator winnerAnimation = ObjectAnimator.ofFloat(
@@ -878,9 +915,9 @@ public class RacingActivity extends AppCompatActivity {
         winnerAnimation.setRepeatCount(2);
         winnerAnimation.start();
         
-        // Play victory sound if player won
+        // Play coin collect sound if player won
         if (winnerCarId == selectedCarId) {
-            audioManager.playVictory();
+            soundManager.playSound(SoundManager.SOUND_COIN_COLLECT);
         }
         
         // Show result after a delay
@@ -1040,7 +1077,7 @@ public class RacingActivity extends AppCompatActivity {
                 intensity = 3; // Late race - high intensity
             }
             
-            audioManager.playRacingEngineSound(intensity);
+            // audioManager.playRacingEngineSound(intensity); // DISABLED
         }
     }
     
@@ -1069,16 +1106,16 @@ public class RacingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (audioManager != null) {
-            audioManager.onResume();
+        if (soundManager != null) {
+            soundManager.resumeAllSounds();
         }
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        if (audioManager != null) {
-            audioManager.onPause();
+        if (soundManager != null) {
+            soundManager.stopAllSounds();
         }
     }
     
@@ -1088,8 +1125,8 @@ public class RacingActivity extends AppCompatActivity {
         if (raceHandler != null && raceRunnable != null) {
             raceHandler.removeCallbacks(raceRunnable);
         }
-        if (audioManager != null) {
-            audioManager.stopEngineSound();
+        if (soundManager != null) {
+            soundManager.release();
         }
     }
     
