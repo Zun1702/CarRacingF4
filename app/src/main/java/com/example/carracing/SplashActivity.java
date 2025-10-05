@@ -32,7 +32,6 @@ public class SplashActivity extends AppCompatActivity {
     
     private void initializeViews() {
         ivF1Logo = findViewById(R.id.ivF1Logo);
-        ivRacingCarLogo = findViewById(R.id.ivRacingCarLogo);
         tvGameTitle = findViewById(R.id.tvGameTitle);
         tvSubtitle = findViewById(R.id.tvSubtitle);
         tvLoadingText = findViewById(R.id.tvLoadingText);
@@ -43,39 +42,49 @@ public class SplashActivity extends AppCompatActivity {
     
     private void startAnimations() {
         // F1 Logo fade in and scale animation
-        Animation f1FadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        f1FadeIn.setDuration(1000);
-        ivF1Logo.startAnimation(f1FadeIn);
-        ivF1Logo.setAlpha(1.0f);
+        if (ivF1Logo != null) {
+            Animation f1FadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+            f1FadeIn.setDuration(1000);
+            ivF1Logo.startAnimation(f1FadeIn);
+            ivF1Logo.setAlpha(1.0f);
+        }
         
         // Racing Car Logo slide up animation with delay
-        Animation racingCarSlideUp = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-        racingCarSlideUp.setDuration(1200);
-        racingCarSlideUp.setStartOffset(500);
-        ivRacingCarLogo.startAnimation(racingCarSlideUp);
-        ivRacingCarLogo.setAlpha(1.0f);
+        if (ivRacingCarLogo != null) {
+            Animation racingCarSlideUp = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+            racingCarSlideUp.setDuration(1200);
+            racingCarSlideUp.setStartOffset(500);
+            ivRacingCarLogo.startAnimation(racingCarSlideUp);
+            ivRacingCarLogo.setAlpha(1.0f);
+        }
         
         // Title fade in animation
-        Animation titleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        titleFadeIn.setDuration(1000);
-        titleFadeIn.setStartOffset(1000);
-        tvGameTitle.startAnimation(titleFadeIn);
-        tvGameTitle.setAlpha(1.0f);
+        if (tvGameTitle != null) {
+            Animation titleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+            titleFadeIn.setDuration(1000);
+            titleFadeIn.setStartOffset(1000);
+            tvGameTitle.startAnimation(titleFadeIn);
+            tvGameTitle.setAlpha(1.0f);
+        }
         
         // Subtitle fade in animation
-        Animation subtitleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        subtitleFadeIn.setDuration(800);
-        subtitleFadeIn.setStartOffset(1500);
-        tvSubtitle.startAnimation(subtitleFadeIn);
-        tvSubtitle.setAlpha(1.0f);
+        if (tvSubtitle != null) {
+            Animation subtitleFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+            subtitleFadeIn.setDuration(800);
+            subtitleFadeIn.setStartOffset(1500);
+            tvSubtitle.startAnimation(subtitleFadeIn);
+            tvSubtitle.setAlpha(1.0f);
+        }
         
         // Loading text blink animation
-        Animation blink = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        blink.setDuration(800);
-        blink.setRepeatMode(Animation.REVERSE);
-        blink.setRepeatCount(Animation.INFINITE);
-        blink.setStartOffset(2000);
-        tvLoadingText.startAnimation(blink);
+        if (tvLoadingText != null) {
+            Animation blink = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+            blink.setDuration(800);
+            blink.setRepeatMode(Animation.REVERSE);
+            blink.setRepeatCount(Animation.INFINITE);
+            blink.setStartOffset(2000);
+            tvLoadingText.startAnimation(blink);
+        }
     }
     
     private void startLoadingSimulation() {

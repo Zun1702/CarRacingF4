@@ -66,14 +66,11 @@ public class MainActivity extends AppCompatActivity {
         
         // Add logos with animations
         ImageView ivF1Logo = findViewById(R.id.ivF1Logo);
-        ImageView ivRacingCarLogo = findViewById(R.id.ivRacingCarLogo);
         
         // Add subtle animation to F1 logo
         addLogoAnimation(ivF1Logo);
         
         // Add pulse animation to racing car logo
-        addPulseAnimation(ivRacingCarLogo);
-        
         // Set enhanced PNG racing cars with animation for all demo cars (display mode)
         CarAnimationUtils.toggleCarAnimation(this, ivCarDemo1, true, 0); // Red car
         CarAnimationUtils.toggleCarAnimation(this, ivCarDemo2, true, 1); // Blue car
