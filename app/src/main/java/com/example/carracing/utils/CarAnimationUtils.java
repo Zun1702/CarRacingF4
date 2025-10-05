@@ -103,7 +103,7 @@ public class CarAnimationUtils {
      * @param context Application context
      * @param imageView Target ImageView
      * @param enableEffects Whether to add racing-safe effects
-     * @param carColor Car color (0=red, 1=green, 2=blue, 3=orange, 4=purple)
+     * @param carColor Car color (0=red, 1=blue, 2=green, 3=orange, 4=purple)
      */
     public static void setPngRacingForRace(Context context, ImageView imageView, boolean enableEffects, int carColor) {
         // Set the appropriate car resource based on color
@@ -112,10 +112,10 @@ public class CarAnimationUtils {
                 imageView.setImageResource(R.drawable.racingcar_red);
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.racingcar_green);
+                imageView.setImageResource(R.drawable.racingcar_blue);
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.racingcar_blue);
+                imageView.setImageResource(R.drawable.racingcar_green);
                 break;
             case 3:
                 imageView.setImageResource(R.drawable.racingcar_orange);
@@ -290,7 +290,7 @@ public class CarAnimationUtils {
      * @param context Application context
      * @param imageView Target ImageView
      * @param useAnimation Whether to use animated version
-     * @param carColor Car color (0=red, 1=green, 2=blue, 3=orange, 4=purple)
+     * @param carColor Car color (0=red, 1=blue, 2=green, 3=orange, 4=purple)
      */
     public static void setCarForRacing(Context context, ImageView imageView, boolean useAnimation, int carColor) {
         if (useAnimation) {
@@ -302,10 +302,10 @@ public class CarAnimationUtils {
                     setPngRacingRedCar(context, imageView);
                     break;
                 case 1:
-                    setPngRacingGreenCar(context, imageView);
+                    setPngRacingBlueCar(context, imageView);
                     break;
                 case 2:
-                    setPngRacingBlueCar(context, imageView);
+                    setPngRacingGreenCar(context, imageView);
                     break;
                 case 3:
                     setPngRacingOrangeCar(context, imageView);
